@@ -194,7 +194,7 @@ class PublisherController extends Controller
 					if($model->save()) {
 						echo CJSON::encode(array(
 							'type' => 5,
-							'get' => Yii::app()->controller->createUrl('manage'),
+							'get' => Yii::app()->controller->createUrl('manage', array('plugin'=>'collection')),
 							'id' => 'partial-article-collection-publisher',
 							'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'ArticleCollectionPublisher success created.').'</strong></div>',
 						));
@@ -207,7 +207,7 @@ class PublisherController extends Controller
 		}
 		
 		$this->dialogDetail = true;
-		$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage');
+		$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage', array('plugin'=>'collection'));
 		$this->dialogWidth = 600;
 
 		$this->pageTitle = Yii::t('phrase', 'Create Article Collection Publishers');
@@ -243,7 +243,7 @@ class PublisherController extends Controller
 					if($model->save()) {
 						echo CJSON::encode(array(
 							'type' => 5,
-							'get' => Yii::app()->controller->createUrl('manage'),
+							'get' => Yii::app()->controller->createUrl('manage', array('plugin'=>'collection')),
 							'id' => 'partial-article-collection-publisher',
 							'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'ArticleCollectionPublisher success updated.').'</strong></div>',
 						));
@@ -256,7 +256,7 @@ class PublisherController extends Controller
 		}
 		
 		$this->dialogDetail = true;
-		$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage');
+		$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage', array('plugin'=>'collection'));
 		$this->dialogWidth = 600;
 
 		$this->pageTitle = Yii::t('phrase', 'Update Article Collection Publishers');
@@ -276,7 +276,7 @@ class PublisherController extends Controller
 		$model=$this->loadModel($id);
 		
 		$this->dialogDetail = true;
-		$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage');
+		$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage', array('plugin'=>'collection'));
 		$this->dialogWidth = 550;
 
 		$this->pageTitle = Yii::t('phrase', 'View Article Collection Publishers');
@@ -338,7 +338,7 @@ class PublisherController extends Controller
 				if($model->delete()) {
 					echo CJSON::encode(array(
 						'type' => 5,
-						'get' => Yii::app()->controller->createUrl('manage'),
+						'get' => Yii::app()->controller->createUrl('manage', array('plugin'=>'collection')),
 						'id' => 'partial-article-collection-publisher',
 						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'ArticleCollectionPublisher success deleted.').'</strong></div>',
 					));
@@ -347,7 +347,7 @@ class PublisherController extends Controller
 
 		} else {
 			$this->dialogDetail = true;
-			$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage');
+			$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage', array('plugin'=>'collection'));
 			$this->dialogWidth = 350;
 
 			$this->pageTitle = Yii::t('phrase', 'ArticleCollectionPublisher Delete.');
@@ -383,7 +383,7 @@ class PublisherController extends Controller
 				if($model->update()) {
 					echo CJSON::encode(array(
 						'type' => 5,
-						'get' => Yii::app()->controller->createUrl('manage'),
+						'get' => Yii::app()->controller->createUrl('manage', array('plugin'=>'collection')),
 						'id' => 'partial-article-collection-publisher',
 						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'ArticleCollectionPublisher success updated.').'</strong></div>',
 					));
@@ -392,7 +392,7 @@ class PublisherController extends Controller
 
 		} else {
 			$this->dialogDetail = true;
-			$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage');
+			$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage', array('plugin'=>'collection'));
 			$this->dialogWidth = 350;
 
 			$this->pageTitle = $title;

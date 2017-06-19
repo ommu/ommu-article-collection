@@ -271,7 +271,7 @@ class ArticleCollectionAuthor extends CActiveRecord
 			if(!isset($_GET['type'])) {
 				$this->defaultColumns[] = array(
 					'name' => 'publish',
-					'value' => 'Utility::getPublish(Yii::app()->controller->createUrl("publish",array("id"=>$data->author_id)), $data->publish, 1)',
+					'value' => 'Utility::getPublish(Yii::app()->controller->createUrl("publish",array("id"=>$data->author_id,\'plugin\'=>\'collection\')), $data->publish, 1)',
 					'htmlOptions' => array(
 						'class' => 'center',
 					),

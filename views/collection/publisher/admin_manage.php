@@ -75,19 +75,19 @@
 						'options' => array(							
 							'class' => 'view',
 						),
-						'url' => 'Yii::app()->controller->createUrl("view",array("id"=>$data->primaryKey))'),
+						'url' => 'Yii::app()->controller->createUrl("view",array("id"=>$data->primaryKey,\'plugin\'=>\'collection\'))'),
 					'update' => array(
 						'label' => 'update',
 						'options' => array(
 							'class' => 'update'
 						),
-						'url' => 'Yii::app()->controller->createUrl("edit",array("id"=>$data->primaryKey))'),
+						'url' => 'Yii::app()->controller->createUrl("edit",array("id"=>$data->primaryKey,\'plugin\'=>\'collection\'))'),
 					'delete' => array(
 						'label' => 'delete',
 						'options' => array(
 							'class' => 'delete'
 						),
-						'url' => 'Yii::app()->controller->createUrl("delete",array("id"=>$data->primaryKey))')
+						'url' => 'Yii::app()->controller->createUrl("delete",array("id"=>$data->primaryKey,\'plugin\'=>\'collection\'))')
 				),
 				'template' => '{update}|{delete}',
 			));

@@ -102,7 +102,7 @@
 							
 						} else {
 							//echo $form->textField($model,'author_input',array('maxlength'=>32,'class'=>'span-6'));
-							$url = Yii::app()->controller->createUrl('collection/authors/add', array('type'=>'article'));
+							$url = Yii::app()->controller->createUrl('collection/authors/add', array('hook'=>'collection','plugin'=>'collection'));
 							$collection = $model->collection_id;
 							$authorId = 'ArticleCollections_author_input';
 							$this->widget('zii.widgets.jui.CJuiAutoComplete', array(
@@ -139,7 +139,7 @@
 								$authors = $model->authors;
 								if(!empty($authors)) {
 									foreach($authors as $key => $val) {?>
-									<div><?php echo $val->author->author_name;?><a href="<?php echo Yii::app()->controller->createUrl('collection/authors/delete',array('id'=>$val->id,'type'=>'article'));?>" title="<?php echo Yii::t('phrase', 'Delete');?>"><?php echo Yii::t('phrase', 'Delete');?></a></div>
+									<div><?php echo $val->author->author_name;?><a href="<?php echo Yii::app()->controller->createUrl('collection/authors/delete',array('id'=>$val->id,'hook'=>'collection','plugin'=>'collection'));?>" title="<?php echo Yii::t('phrase', 'Delete');?>"><?php echo Yii::t('phrase', 'Delete');?></a></div>
 								<?php }
 								}
 							}?>				
@@ -202,7 +202,7 @@
 							
 						} else {
 							//echo $form->textField($model,'subject_input',array('maxlength'=>32,'class'=>'span-6'));
-							$url = Yii::app()->controller->createUrl('collection/subjects/add', array('type'=>'article'));
+							$url = Yii::app()->controller->createUrl('collection/subjects/add', array('hook'=>'collection'));
 							$collection = $model->collection_id;
 							$subjectId = 'ArticleCollections_subject_input';
 							$this->widget('zii.widgets.jui.CJuiAutoComplete', array(
@@ -239,7 +239,7 @@
 								$subjects = $model->subjects;
 								if(!empty($subjects)) {
 									foreach($subjects as $key => $val) {?>
-									<div><?php echo $val->tag->body;?><a href="<?php echo Yii::app()->controller->createUrl('collection/subjects/delete',array('id'=>$val->id,'type'=>'article'));?>" title="<?php echo Yii::t('phrase', 'Delete');?>"><?php echo Yii::t('phrase', 'Delete');?></a></div>
+									<div><?php echo $val->tag->body;?><a href="<?php echo Yii::app()->controller->createUrl('collection/subjects/delete',array('id'=>$val->id,'hook'=>'collection','plugin'=>'collection'));?>" title="<?php echo Yii::t('phrase', 'Delete');?>"><?php echo Yii::t('phrase', 'Delete');?></a></div>
 								<?php }
 								}
 							}?>						

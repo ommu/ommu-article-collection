@@ -128,7 +128,7 @@ class SettingController extends Controller
 					if($model->save()) {
 						echo CJSON::encode(array(
 							'type' => 5,
-							'get' => Yii::app()->controller->createUrl('collection/admin/manage'),
+							'get' => Yii::app()->controller->createUrl('collection/admin/manage', array('plugin'=>'collection')),
 							'id' => 'partial-article-collection-setting',
 							'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'ArticleCollectionSetting success updated.').'</strong></div>',
 						));
@@ -141,7 +141,7 @@ class SettingController extends Controller
 		}
 		
 		$this->dialogDetail = true;
-		$this->dialogGroundUrl = Yii::app()->controller->createUrl('collection/admin/manage');
+		$this->dialogGroundUrl = Yii::app()->controller->createUrl('collection/admin/manage', array('plugin'=>'collection'));
 		$this->dialogWidth = 500;
 
 		$this->pageTitle = Yii::t('phrase', 'Update Article Collection Settings');

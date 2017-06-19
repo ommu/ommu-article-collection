@@ -345,7 +345,7 @@ class AdminController extends Controller
 				if($model->delete()) {
 					echo CJSON::encode(array(
 						'type' => 5,
-						'get' => Yii::app()->controller->createUrl('manage'),
+						'get' => Yii::app()->controller->createUrl('manage', array('plugin'=>'collection')),
 						'id' => 'partial-article-collections',
 						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'ArticleCollections success deleted.').'</strong></div>',
 					));
@@ -354,7 +354,7 @@ class AdminController extends Controller
 
 		} else {
 			$this->dialogDetail = true;
-			$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage');
+			$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage', array('plugin'=>'collection'));
 			$this->dialogWidth = 350;
 
 			$this->pageTitle = Yii::t('phrase', 'ArticleCollections Delete.');
@@ -390,7 +390,7 @@ class AdminController extends Controller
 				if($model->update()) {
 					echo CJSON::encode(array(
 						'type' => 5,
-						'get' => Yii::app()->controller->createUrl('manage'),
+						'get' => Yii::app()->controller->createUrl('manage', array('plugin'=>'collection')),
 						'id' => 'partial-article-collections',
 						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'ArticleCollections success updated.').'</strong></div>',
 					));
@@ -399,7 +399,7 @@ class AdminController extends Controller
 
 		} else {
 			$this->dialogDetail = true;
-			$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage');
+			$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage', array('plugin'=>'collection'));
 			$this->dialogWidth = 350;
 
 			$this->pageTitle = $title;

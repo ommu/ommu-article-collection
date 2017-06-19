@@ -151,10 +151,10 @@ class AuthorsController extends Controller
 			$model->author_input = $_POST['author'];
 
 			if($model->save()) {
-				if(isset($_GET['type']) && $_GET['type'] == 'article')
-					$url = Yii::app()->controller->createUrl('delete',array('id'=>$model->id,'type'=>'article'));
+				if(isset($_GET['hook']) && $_GET['hook'] == 'collection')
+					$url = Yii::app()->controller->createUrl('delete',array('id'=>$model->id,'hook'=>'collection','plugin'=>'collection'));
 				else 
-					$url = Yii::app()->controller->createUrl('delete',array('id'=>$model->id));
+					$url = Yii::app()->controller->createUrl('delete',array('id'=>$model->id,'plugin'=>'collection'));
 				echo CJSON::encode(array(
 					'data' => '<div>'.$model->author->author_name.'<a href="'.$url.'" title="'.Yii::t('phrase', 'Delete').'">'.Yii::t('phrase', 'Delete').'</a></div>',
 				));
@@ -176,14 +176,14 @@ class AuthorsController extends Controller
 			// we only allow deletion via POST request
 			if(isset($id)) {
 				$model->delete();
-				if(isset($_GET['type']) && $_GET['type'] == 'article') {
+				if(isset($_GET['hook']) && $_GET['hook'] == 'collection') {
 					echo CJSON::encode(array(
 						'type' => 4,
 					));
 				} else {
 					echo CJSON::encode(array(
 						'type' => 5,
-						'get' => Yii::app()->controller->createUrl('manage'),
+						'get' => Yii::app()->controller->createUrl('manage', array('plugin'=>'collection')),
 						'id' => 'partial-article-collection-authors',
 						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'ArticleCollectionAuthors success deleted.').'</strong></div>',
 					));
@@ -191,10 +191,10 @@ class AuthorsController extends Controller
 			}
 
 		} else {
-			if(isset($_GET['type']) && $_GET['type'] == 'article')
-				$url = Yii::app()->controller->createUrl('collection/admin/edit', array('id'=>$model->collection_id));
+			if(isset($_GET['hook']) && $_GET['hook'] == 'collection')
+				$url = Yii::app()->controller->createUrl('collection/admin/edit', array('id'=>$model->collection_id,'plugin'=>'collection'));
 			else
-				$url = Yii::app()->controller->createUrl('manage');
+				$url = Yii::app()->controller->createUrl('manage', array('plugin'=>'collection'));
 			
 			$this->dialogDetail = true;
 			$this->dialogGroundUrl = $url;

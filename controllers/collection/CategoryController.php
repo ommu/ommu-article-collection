@@ -161,7 +161,7 @@ class CategoryController extends Controller
 					if($model->save()) {
 						echo CJSON::encode(array(
 							'type' => 5,
-							'get' => Yii::app()->controller->createUrl('manage'),
+							'get' => Yii::app()->controller->createUrl('manage', array('plugin'=>'collection')),
 							'id' => 'partial-article-collection-category',
 							'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'ArticleCollectionCategory success created.').'</strong></div>',
 						));
@@ -174,7 +174,7 @@ class CategoryController extends Controller
 		}
 		
 		$this->dialogDetail = true;
-		$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage');
+		$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage', array('plugin'=>'collection'));
 		$this->dialogWidth = 600;
 
 		$this->pageTitle = Yii::t('phrase', 'Create Article Collection Categories');
@@ -209,7 +209,7 @@ class CategoryController extends Controller
 					if($model->save()) {
 						echo CJSON::encode(array(
 							'type' => 5,
-							'get' => Yii::app()->controller->createUrl('manage'),
+							'get' => Yii::app()->controller->createUrl('manage', array('plugin'=>'collection')),
 							'id' => 'partial-article-collection-category',
 							'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'ArticleCollectionCategory success updated.').'</strong></div>',
 						));
@@ -222,7 +222,7 @@ class CategoryController extends Controller
 		}
 		
 		$this->dialogDetail = true;
-		$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage');
+		$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage', array('plugin'=>'collection'));
 		$this->dialogWidth = 600;
 
 		$this->pageTitle = Yii::t('phrase', 'Update Article Collection Categories');
@@ -242,7 +242,7 @@ class CategoryController extends Controller
 		$model=$this->loadModel($id);
 		
 		$this->dialogDetail = true;
-		$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage');
+		$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage', array('plugin'=>'collection'));
 		$this->dialogWidth = 550;
 
 		$this->pageTitle = Yii::t('phrase', 'View Article Collection Categories');
@@ -304,7 +304,7 @@ class CategoryController extends Controller
 				if($model->delete()) {
 					echo CJSON::encode(array(
 						'type' => 5,
-						'get' => Yii::app()->controller->createUrl('manage'),
+						'get' => Yii::app()->controller->createUrl('manage', array('plugin'=>'collection')),
 						'id' => 'partial-article-collection-category',
 						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'ArticleCollectionCategory success deleted.').'</strong></div>',
 					));
@@ -313,7 +313,7 @@ class CategoryController extends Controller
 
 		} else {
 			$this->dialogDetail = true;
-			$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage');
+			$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage', array('plugin'=>'collection'));
 			$this->dialogWidth = 350;
 
 			$this->pageTitle = Yii::t('phrase', 'ArticleCollectionCategory Delete.');
@@ -349,7 +349,7 @@ class CategoryController extends Controller
 				if($model->update()) {
 					echo CJSON::encode(array(
 						'type' => 5,
-						'get' => Yii::app()->controller->createUrl('manage'),
+						'get' => Yii::app()->controller->createUrl('manage', array('plugin'=>'collection')),
 						'id' => 'partial-article-collection-category',
 						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'ArticleCollectionCategory success updated.').'</strong></div>',
 					));
@@ -358,7 +358,7 @@ class CategoryController extends Controller
 
 		} else {
 			$this->dialogDetail = true;
-			$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage');
+			$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage', array('plugin'=>'collection'));
 			$this->dialogWidth = 350;
 
 			$this->pageTitle = $title;
