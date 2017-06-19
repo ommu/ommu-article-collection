@@ -107,8 +107,14 @@ class SubjectsController extends Controller
 	/**
 	 * Manages all models.
 	 */
-	public function actionManage() 
+	public function actionManage($tag=null) 
 	{
+		$pageTitle = Yii::t('phrase', 'Subject Data');
+		if($tag != null) {
+			$data = ViewArticleCollectionSubject::model()->findByPk($tag);
+			$pageTitle = Yii::t('phrase', 'Subject Data: $subject_name', array ('$subject_name'=>$data->tag->body));
+		}
+		
 		$model=new ArticleCollectionSubjects('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['ArticleCollectionSubjects'])) {
@@ -125,7 +131,7 @@ class SubjectsController extends Controller
 		}
 		$columns = $model->getGridColumn($columnTemp);
 
-		$this->pageTitle = Yii::t('phrase', 'Collection Subjects');
+		$this->pageTitle = $pageTitle;
 		$this->pageDescription = '';
 		$this->pageMeta = '';
 		$this->render('admin_manage',array(

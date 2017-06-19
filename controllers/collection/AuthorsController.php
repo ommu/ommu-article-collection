@@ -107,8 +107,14 @@ class AuthorsController extends Controller
 	/**
 	 * Manages all models.
 	 */
-	public function actionManage() 
+	public function actionManage($author=null) 
 	{
+		$pageTitle = Yii::t('phrase', 'Author Data');
+		if($author != null) {
+			$data = ArticleCollectionAuthor::model()->findByPk($author);
+			$pageTitle = Yii::t('phrase', 'Author Data: $author_name', array ('$author_name'=>$data->author_name));
+		}
+		
 		$model=new ArticleCollectionAuthors('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['ArticleCollectionAuthors'])) {
@@ -125,7 +131,7 @@ class AuthorsController extends Controller
 		}
 		$columns = $model->getGridColumn($columnTemp);
 
-		$this->pageTitle = Yii::t('phrase', 'Collection Authors');
+		$this->pageTitle = $pageTitle;
 		$this->pageDescription = '';
 		$this->pageMeta = '';
 		$this->render('admin_manage',array(

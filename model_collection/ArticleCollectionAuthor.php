@@ -268,7 +268,7 @@ class ArticleCollectionAuthor extends CActiveRecord
 			);
 			$this->defaultColumns[] = array(
 				'name' => 'collection_search',
-				'value' => 'CHtml::link($data->view->collections ? $data->view->collections : 0, Yii::app()->controller->createUrl("collection/admin/manage",array(\'author\'=>$data->author_id,\'plugin\'=>\'collection\')))',
+				'value' => 'CHtml::link($data->view->collections ? $data->view->collections : 0, Yii::app()->controller->createUrl("collection/authors/manage",array(\'author\'=>$data->author_id,\'plugin\'=>\'collection\')))',
 				'htmlOptions' => array(
 					'class' => 'center',
 				),

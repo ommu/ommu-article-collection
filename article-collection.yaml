@@ -59,3 +59,21 @@ content_menu	:
 	- urlTitle: Add Author
 		urlRules: {article, collection/author, manage, siteType: "0,1", userLevel: "1,2"}
 		urlPath: {url: add, attr: -, icon: -}
+	- urlTitle: View Author Data
+		urlRules: {article, collection/author, manage, siteType: "0,1", userLevel: "1,2"}
+		urlPath: {url: collection/authors/manage, attr: -, icon: -}
+        
+# controller collection/authors
+	- urlTitle: Back to Authors
+		urlRules: {article, collection/authors, manage, siteType: "0,1", userLevel: "1,2"}
+		urlPath: {url: collection/author/manage, attr: -, icon: -}
+        
+# controller collection/subject
+	- urlTitle: View Subject Data
+		urlRules: {article, collection/subject, manage, siteType: "0,1", userLevel: "1,2"}
+		urlPath: {url: collection/subjects/manage, attr: -, icon: -}
+        
+# controller collection/subjects
+	- urlTitle: Back to Subjects
+		urlRules: {article, collection/subjects, manage, siteType: "0,1", userLevel: "1,2"}
+		urlPath: {url: collection/subject/manage, attr: -, icon: -}

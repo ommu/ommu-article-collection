@@ -123,7 +123,7 @@ class SubjectController extends Controller
 		}
 		$columns = $model->getGridColumn($columnTemp);
 
-		$this->pageTitle = Yii::t('phrase', 'Collection Subjects');
+		$this->pageTitle = Yii::t('phrase', 'Subjects');
 		$this->pageDescription = '';
 		$this->pageMeta = '';
 		$this->render('admin_manage',array(
