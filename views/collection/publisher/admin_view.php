@@ -45,6 +45,10 @@
 				'value'=>$model->publisher_address ? $model->publisher_address : '-',
 			),
 			array(
+				'name'=>'collection_search',
+				'value'=>$model->view->collections ? $model->view->collections : 0,
+			),
+			array(
 				'name'=>'creation_date',
 				'value'=>!in_array($model->creation_date, array('0000-00-00 00:00:00','1970-01-01 00:00:00')) ? Utility::dateFormat($model->creation_date, true) : '-',
 			),

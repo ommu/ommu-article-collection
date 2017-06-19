@@ -39,6 +39,7 @@ class ArticleCollectionAuthor extends CActiveRecord
 	public $defaultColumns = array();
 	
 	// Variable Search
+	public $collection_search;
 	public $creation_search;
 	public $modified_search;
 
@@ -76,7 +77,7 @@ class ArticleCollectionAuthor extends CActiveRecord
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('author_id, publish, author_name, creation_date, creation_id, modified_date, modified_id,
-				creation_search, modified_search', 'safe', 'on'=>'search'),
+				collection_search, creation_search, modified_search', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -88,9 +89,10 @@ class ArticleCollectionAuthor extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'authors' => array(self::HAS_MANY, 'ArticleCollectionAuthors', 'author_id'),
+			'view' => array(self::BELONGS_TO, 'ViewArticleCollectionAuthor', 'author_id'),
 			'creation' => array(self::BELONGS_TO, 'Users', 'creation_id'),
 			'modified' => array(self::BELONGS_TO, 'Users', 'modified_id'),
+			'authors' => array(self::HAS_MANY, 'ArticleCollectionAuthors', 'author_id'),
 		);
 	}
 
@@ -102,24 +104,15 @@ class ArticleCollectionAuthor extends CActiveRecord
 		return array(
 			'author_id' => Yii::t('attribute', 'Author'),
 			'publish' => Yii::t('attribute', 'Publish'),
-			'author_name' => Yii::t('attribute', 'Author Name'),
+			'author_name' => Yii::t('attribute', 'Author'),
 			'creation_date' => Yii::t('attribute', 'Creation Date'),
 			'creation_id' => Yii::t('attribute', 'Creation'),
 			'modified_date' => Yii::t('attribute', 'Modified Date'),
 			'modified_id' => Yii::t('attribute', 'Modified'),
+			'collection_search' => Yii::t('attribute', 'Collections'),
 			'creation_search' => Yii::t('attribute', 'Creation'),
 			'modified_search' => Yii::t('attribute', 'Modified'),
 		);
-		/*
-			'Author' => 'Author',
-			'Publish' => 'Publish',
-			'Author Name' => 'Author Name',
-			'Creation Date' => 'Creation Date',
-			'Creation' => 'Creation',
-			'Modified Date' => 'Modified Date',
-			'Modified' => 'Modified',
-		
-		*/
 	}
 
 	/**
@@ -139,6 +132,21 @@ class ArticleCollectionAuthor extends CActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
+		
+		// Custom Search
+		$criteria->with = array(
+			'view' => array(
+				'alias'=>'view',
+			),
+			'creation' => array(
+				'alias'=>'creation',
+				'select'=>'displayname',
+			),
+			'modified' => array(
+				'alias'=>'modified',
+				'select'=>'displayname',
+			),
+		);
 
 		$criteria->compare('t.author_id',strtolower($this->author_id),true);
 		if(isset($_GET['type']) && $_GET['type'] == 'publish')
@@ -165,17 +173,7 @@ class ArticleCollectionAuthor extends CActiveRecord
 		else
 			$criteria->compare('t.modified_id',$this->modified_id);
 		
-		// Custom Search
-		$criteria->with = array(
-			'creation' => array(
-				'alias'=>'creation',
-				'select'=>'displayname',
-			),
-			'modified' => array(
-				'alias'=>'modified',
-				'select'=>'displayname',
-			),
-		);
+		$criteria->compare('view.collections',$this->collection_search);
 		$criteria->compare('creation.displayname',strtolower($this->creation_search), true);
 		$criteria->compare('modified.displayname',strtolower($this->modified_search), true);
 
@@ -267,6 +265,14 @@ class ArticleCollectionAuthor extends CActiveRecord
 						'showButtonPanel' => true,
 					),
 				), true),
+			);
+			$this->defaultColumns[] = array(
+				'name' => 'collection_search',
+				'value' => 'CHtml::link($data->view->collections ? $data->view->collections : 0, Yii::app()->controller->createUrl("collection/admin/manage",array(\'author\'=>$data->author_id,\'plugin\'=>\'collection\')))',
+				'htmlOptions' => array(
+					'class' => 'center',
+				),
+				'type' => 'raw',
 			);
 			if(!isset($_GET['type'])) {
 				$this->defaultColumns[] = array(

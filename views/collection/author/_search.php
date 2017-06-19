@@ -22,7 +22,7 @@
 	<ul>
 		<li>
 			<?php echo $model->getAttributeLabel('author_id'); ?><br/>
-			<?php echo $form->textField($model,'author_id',array('size'=>11,'maxlength'=>11)); ?>
+			<?php echo $form->textField($model,'author_id'); ?>
 		</li>
 
 		<li>
@@ -32,7 +32,7 @@
 
 		<li>
 			<?php echo $model->getAttributeLabel('author_name'); ?><br/>
-			<?php echo $form->textArea($model,'author_name',array('rows'=>6, 'cols'=>50)); ?>
+			<?php echo $form->textArea($model,'author_name'); ?>
 		</li>
 
 		<li>
@@ -42,7 +42,7 @@
 
 		<li>
 			<?php echo $model->getAttributeLabel('creation_id'); ?><br/>
-			<?php echo $form->textField($model,'creation_id',array('size'=>11,'maxlength'=>11)); ?>
+			<?php echo $form->textField($model,'creation_id'); ?>
 		</li>
 
 		<li>
@@ -52,7 +52,7 @@
 
 		<li>
 			<?php echo $model->getAttributeLabel('modified_id'); ?><br/>
-			<?php echo $form->textField($model,'modified_id',array('size'=>11,'maxlength'=>11)); ?>
+			<?php echo $form->textField($model,'modified_id'); ?>
 		</li>
 
 		<li class="submit">
