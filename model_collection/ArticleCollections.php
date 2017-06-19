@@ -4,9 +4,9 @@
  * version: 0.0.1
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
- * @copyright Copyright (c) 2016 Ommu Platform (ommu.co)
+ * @copyright Copyright (c) 2016 Ommu Platform (opensource.ommu.co)
  * @created date 26 October 2016, 06:57 WIB
- * @link http://company.ommu.co
+ * @link https://github.com/ommu/plu-article-collection
  * @contact (+62)856-299-4114
  *
  * This is the template for generating the model class of a specified table.
@@ -118,7 +118,7 @@ class ArticleCollections extends CActiveRecord
 		return array(
 			'collection_id' => Yii::t('attribute', 'Collection'),
 			'publish' => Yii::t('attribute', 'Publish'),
-			'cat_id' => Yii::t('attribute', 'Cat'),
+			'cat_id' => Yii::t('attribute', 'Category'),
 			'article_id' => Yii::t('attribute', 'Article'),
 			'publisher_id' => Yii::t('attribute', 'Publisher'),
 			'publish_year' => Yii::t('attribute', 'Publish Year'),
