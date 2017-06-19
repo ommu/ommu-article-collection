@@ -31,6 +31,14 @@
 				'name'=>'collections',
 				'value'=>$model->collections ? $model->collections : 0,
 			),
+			array(
+				'name'=>'creation_date',
+				'value'=>!in_array($model->creation_date, array('0000-00-00 00:00:00','1970-01-01 00:00:00')) ? Utility::dateFormat($model->creation_date, true) : '-',
+			),
+			array(
+				'name'=>'modified_date',
+				'value'=>!in_array($model->modified_date, array('0000-00-00 00:00:00','1970-01-01 00:00:00')) ? Utility::dateFormat($model->modified_date, true) : '-',
+			),
 		),
 	)); ?>
 </div>
