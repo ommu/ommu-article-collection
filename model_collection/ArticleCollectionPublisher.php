@@ -41,6 +41,7 @@ class ArticleCollectionPublisher extends CActiveRecord
 	public $defaultColumns = array();
 	
 	// Variable Search
+	public $collection_search;
 	public $creation_search;
 	public $modified_search;
 
@@ -79,7 +80,7 @@ class ArticleCollectionPublisher extends CActiveRecord
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('publisher_id, publish, publisher_name, publisher_location, publisher_address, creation_date, creation_id, modified_date, modified_id,
-				creation_search, modified_search', 'safe', 'on'=>'search'),
+				collection_search, creation_search, modified_search', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -91,9 +92,10 @@ class ArticleCollectionPublisher extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'collections' => array(self::HAS_MANY, 'ArticleCollections', 'publisher_id'),
+			'view' => array(self::BELONGS_TO, 'ViewArticleCollectionPublisher', 'publisher_id'),
 			'creation' => array(self::BELONGS_TO, 'Users', 'creation_id'),
 			'modified' => array(self::BELONGS_TO, 'Users', 'modified_id'),
+			'collections' => array(self::HAS_MANY, 'ArticleCollections', 'publisher_id'),
 		);
 	}
 
@@ -105,28 +107,17 @@ class ArticleCollectionPublisher extends CActiveRecord
 		return array(
 			'publisher_id' => Yii::t('attribute', 'Publisher'),
 			'publish' => Yii::t('attribute', 'Publish'),
-			'publisher_name' => Yii::t('attribute', 'Publisher Name'),
-			'publisher_location' => Yii::t('attribute', 'Publisher Location'),
-			'publisher_address' => Yii::t('attribute', 'Publisher Address'),
+			'publisher_name' => Yii::t('attribute', 'Publisher'),
+			'publisher_location' => Yii::t('attribute', 'Location'),
+			'publisher_address' => Yii::t('attribute', 'Address'),
 			'creation_date' => Yii::t('attribute', 'Creation Date'),
 			'creation_id' => Yii::t('attribute', 'Creation'),
 			'modified_date' => Yii::t('attribute', 'Modified Date'),
 			'modified_id' => Yii::t('attribute', 'Modified'),
+			'collection_search' => Yii::t('attribute', 'Collections'),
 			'creation_search' => Yii::t('attribute', 'Creation'),
 			'modified_search' => Yii::t('attribute', 'Modified'),
 		);
-		/*
-			'Publisher' => 'Publisher',
-			'Publish' => 'Publish',
-			'Publisher Name' => 'Publisher Name',
-			'Publisher Location' => 'Publisher Location',
-			'Publisher Address' => 'Publisher Address',
-			'Creation Date' => 'Creation Date',
-			'Creation' => 'Creation',
-			'Modified Date' => 'Modified Date',
-			'Modified' => 'Modified',
-		
-		*/
 	}
 
 	/**
@@ -146,6 +137,21 @@ class ArticleCollectionPublisher extends CActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
+		
+		// Custom Search
+		$criteria->with = array(
+			'view' => array(
+				'alias'=>'view',
+			),
+			'creation' => array(
+				'alias'=>'creation',
+				'select'=>'displayname',
+			),
+			'modified' => array(
+				'alias'=>'modified',
+				'select'=>'displayname',
+			),
+		);
 
 		$criteria->compare('t.publisher_id',strtolower($this->publisher_id),true);
 		if(isset($_GET['type']) && $_GET['type'] == 'publish')
@@ -174,17 +180,7 @@ class ArticleCollectionPublisher extends CActiveRecord
 		else
 			$criteria->compare('t.modified_id',$this->modified_id);
 		
-		// Custom Search
-		$criteria->with = array(
-			'creation' => array(
-				'alias'=>'creation',
-				'select'=>'displayname',
-			),
-			'modified' => array(
-				'alias'=>'modified',
-				'select'=>'displayname',
-			),
-		);
+		$criteria->compare('view.collections',$this->collection_search);
 		$criteria->compare('creation.displayname',strtolower($this->creation_search), true);
 		$criteria->compare('modified.displayname',strtolower($this->modified_search), true);
 
@@ -250,7 +246,6 @@ class ArticleCollectionPublisher extends CActiveRecord
 			);
 			$this->defaultColumns[] = 'publisher_name';
 			$this->defaultColumns[] = 'publisher_location';
-			$this->defaultColumns[] = 'publisher_address';
 			$this->defaultColumns[] = array(
 				'name' => 'creation_search',
 				'value' => '$data->creation->displayname',
@@ -280,6 +275,14 @@ class ArticleCollectionPublisher extends CActiveRecord
 						'showButtonPanel' => true,
 					),
 				), true),
+			);
+			$this->defaultColumns[] = array(
+				'name' => 'collection_search',
+				'value' => 'CHtml::link($data->view->collections ? $data->view->collections : 0, Yii::app()->controller->createUrl("collection/admin/manage",array(\'publisher\'=>$data->publisher_id,\'plugin\'=>\'collection\')))',
+				'htmlOptions' => array(
+					'class' => 'center',
+				),
+				'type' => 'raw',
 			);
 			if(!isset($_GET['type'])) {
 				$this->defaultColumns[] = array(

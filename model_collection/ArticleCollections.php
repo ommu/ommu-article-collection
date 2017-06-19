@@ -342,10 +342,12 @@ class ArticleCollections extends CActiveRecord
 				'name' => 'article_search',
 				'value' => '$data->article->title',
 			);
-			$this->defaultColumns[] = array(
-				'name' => 'publisher_search',
-				'value' => '$data->publisher->publisher_name',
-			);
+			if(!isset($_GET['publisher'])) {
+				$this->defaultColumns[] = array(
+					'name' => 'publisher_search',
+					'value' => '$data->publisher->publisher_name',
+				);
+			}
 			$this->defaultColumns[] = 'publish_year';
 			$this->defaultColumns[] = 'publish_location';
 			$this->defaultColumns[] = array(

@@ -129,7 +129,7 @@ class CategoryController extends Controller
 		}
 		$columns = $model->getGridColumn($columnTemp);
 
-		$this->pageTitle = Yii::t('phrase', 'Article Collection Categories Manage');
+		$this->pageTitle = Yii::t('phrase', 'Categories');
 		$this->pageDescription = '';
 		$this->pageMeta = '';
 		$this->render('admin_manage',array(
@@ -163,7 +163,7 @@ class CategoryController extends Controller
 							'type' => 5,
 							'get' => Yii::app()->controller->createUrl('manage', array('plugin'=>'collection')),
 							'id' => 'partial-article-collection-category',
-							'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'ArticleCollectionCategory success created.').'</strong></div>',
+							'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'Collection category success created.').'</strong></div>',
 						));
 					} else {
 						print_r($model->getErrors());
@@ -177,7 +177,7 @@ class CategoryController extends Controller
 		$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage', array('plugin'=>'collection'));
 		$this->dialogWidth = 600;
 
-		$this->pageTitle = Yii::t('phrase', 'Create Article Collection Categories');
+		$this->pageTitle = Yii::t('phrase', 'Create Category');
 		$this->pageDescription = '';
 		$this->pageMeta = '';
 		$this->render('admin_add',array(
@@ -211,7 +211,7 @@ class CategoryController extends Controller
 							'type' => 5,
 							'get' => Yii::app()->controller->createUrl('manage', array('plugin'=>'collection')),
 							'id' => 'partial-article-collection-category',
-							'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'ArticleCollectionCategory success updated.').'</strong></div>',
+							'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'Collection category success updated.').'</strong></div>',
 						));
 					} else {
 						print_r($model->getErrors());
@@ -225,7 +225,7 @@ class CategoryController extends Controller
 		$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage', array('plugin'=>'collection'));
 		$this->dialogWidth = 600;
 
-		$this->pageTitle = Yii::t('phrase', 'Update Article Collection Categories');
+		$this->pageTitle = Yii::t('phrase', 'Update Category: $category_name', array('$category_name'=>$model->category_name));
 		$this->pageDescription = '';
 		$this->pageMeta = '';
 		$this->render('admin_edit',array(
@@ -243,9 +243,9 @@ class CategoryController extends Controller
 		
 		$this->dialogDetail = true;
 		$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage', array('plugin'=>'collection'));
-		$this->dialogWidth = 550;
+		$this->dialogWidth = 600;
 
-		$this->pageTitle = Yii::t('phrase', 'View Article Collection Categories');
+		$this->pageTitle = Yii::t('phrase', 'View Category: $category_name', array('$category_name'=>$model->category_name));
 		$this->pageDescription = '';
 		$this->pageMeta = '';
 		$this->render('admin_view',array(
@@ -306,7 +306,7 @@ class CategoryController extends Controller
 						'type' => 5,
 						'get' => Yii::app()->controller->createUrl('manage', array('plugin'=>'collection')),
 						'id' => 'partial-article-collection-category',
-						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'ArticleCollectionCategory success deleted.').'</strong></div>',
+						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'Collection category success deleted.').'</strong></div>',
 					));
 				}
 			}
@@ -316,7 +316,7 @@ class CategoryController extends Controller
 			$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage', array('plugin'=>'collection'));
 			$this->dialogWidth = 350;
 
-			$this->pageTitle = Yii::t('phrase', 'ArticleCollectionCategory Delete.');
+			$this->pageTitle = Yii::t('phrase', 'Delete Category: $category_name', array('$category_name'=>$model->category_name));
 			$this->pageDescription = '';
 			$this->pageMeta = '';
 			$this->render('admin_delete');
@@ -339,6 +339,7 @@ class CategoryController extends Controller
 			$title = Yii::t('phrase', 'Publish');
 			$replace = 1;
 		}
+		$pageTitle = Yii::t('phrase', '{title} Category: $category_name', array('{title}'=>$title, '$category_name'=>$model->category_name));
 
 		if(Yii::app()->request->isPostRequest) {
 			// we only allow deletion via POST request
@@ -351,7 +352,7 @@ class CategoryController extends Controller
 						'type' => 5,
 						'get' => Yii::app()->controller->createUrl('manage', array('plugin'=>'collection')),
 						'id' => 'partial-article-collection-category',
-						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'ArticleCollectionCategory success updated.').'</strong></div>',
+						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'Collection category success updated.').'</strong></div>',
 					));
 				}
 			}
@@ -361,7 +362,7 @@ class CategoryController extends Controller
 			$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage', array('plugin'=>'collection'));
 			$this->dialogWidth = 350;
 
-			$this->pageTitle = $title;
+			$this->pageTitle = $pageTitle;
 			$this->pageDescription = '';
 			$this->pageMeta = '';
 			$this->render('admin_publish',array(

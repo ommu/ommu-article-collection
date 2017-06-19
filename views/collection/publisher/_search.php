@@ -22,7 +22,7 @@
 	<ul>
 		<li>
 			<?php echo $model->getAttributeLabel('publisher_id'); ?><br/>
-			<?php echo $form->textField($model,'publisher_id',array('size'=>11,'maxlength'=>11)); ?>
+			<?php echo $form->textField($model,'publisher_id'); ?>
 		</li>
 
 		<li>
@@ -32,17 +32,17 @@
 
 		<li>
 			<?php echo $model->getAttributeLabel('publisher_name'); ?><br/>
-			<?php echo $form->textArea($model,'publisher_name',array('rows'=>6, 'cols'=>50)); ?>
+			<?php echo $form->textArea($model,'publisher_name'); ?>
 		</li>
 
 		<li>
 			<?php echo $model->getAttributeLabel('publisher_location'); ?><br/>
-			<?php echo $form->textArea($model,'publisher_location',array('rows'=>6, 'cols'=>50)); ?>
+			<?php echo $form->textArea($model,'publisher_location'); ?>
 		</li>
 
 		<li>
 			<?php echo $model->getAttributeLabel('publisher_address'); ?><br/>
-			<?php echo $form->textArea($model,'publisher_address',array('rows'=>6, 'cols'=>50)); ?>
+			<?php echo $form->textArea($model,'publisher_address'); ?>
 		</li>
 
 		<li>
@@ -52,7 +52,7 @@
 
 		<li>
 			<?php echo $model->getAttributeLabel('creation_id'); ?><br/>
-			<?php echo $form->textField($model,'creation_id',array('size'=>11,'maxlength'=>11)); ?>
+			<?php echo $form->textField($model,'creation_id'); ?>
 		</li>
 
 		<li>
@@ -62,7 +62,7 @@
 
 		<li>
 			<?php echo $model->getAttributeLabel('modified_id'); ?><br/>
-			<?php echo $form->textField($model,'modified_id',array('size'=>11,'maxlength'=>11)); ?>
+			<?php echo $form->textField($model,'modified_id'); ?>
 		</li>
 
 		<li class="submit">
