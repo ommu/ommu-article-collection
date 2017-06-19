@@ -35,6 +35,10 @@ plugin_menu		:
 	- urlTitle: Settings
 		urlRules: {siteType: "0,1", userLevel: 1}
 		urlPath: {url: collection/setting/edit, attr: -, icon: -}
+                
+	- urlTitle: Collection Manual
+		urlRules: {siteType: "0,1", userLevel: 2}
+		urlPath: {url: collection/setting/manual, attr: -, icon: -}
 
 content_menu	:
 # controller collection/admin
@@ -77,3 +81,11 @@ content_menu	:
 	- urlTitle: Back to Subjects
 		urlRules: {article, collection/subjects, manage, siteType: "0,1", userLevel: "1,2"}
 		urlPath: {url: collection/subject/manage, attr: -, icon: -}
+		
+# controller location/setting
+	- urlTitle: Back to Collections
+		urlRules: {article, collection/setting, edit, siteType: "0,1", userLevel: 1}
+		urlPath: {url: collection/admin/manage, attr: -, icon: -}
+	- urlTitle: Collection Manual
+		urlRules: {article, collection/setting, edit, siteType: "0,1", userLevel: 1}
+		urlPath: {url: manual, attr: -, icon: -}

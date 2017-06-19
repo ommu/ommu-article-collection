@@ -24,6 +24,10 @@
  *
  * The followings are the available columns in table 'ommu_article_collection_setting':
  * @property integer $id
+ * @property string $license
+ * @property integer $permission
+ * @property string $meta_keyword
+ * @property string $meta_description
  * @property integer $article_cat_id
  * @property string $modified_date
  * @property string $modified_id
@@ -62,13 +66,14 @@ class ArticleCollectionSetting extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('article_cat_id', 'required'),
-			array('article_cat_id', 'numerical', 'integerOnly'=>true),
+			array('license, permission, meta_keyword, meta_description, article_cat_id', 'required'),
+			array('permission, article_cat_id, modified_id', 'numerical', 'integerOnly'=>true),
 			array('modified_id', 'length', 'max'=>11),
+			array('license', 'length', 'max'=>32),
 			array('', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, article_cat_id, modified_date, modified_id,
+			array('id, license, permission, meta_keyword, meta_description, article_cat_id, modified_date, modified_id,
 				modified_search', 'safe', 'on'=>'search'),
 		);
 	}
@@ -92,18 +97,15 @@ class ArticleCollectionSetting extends CActiveRecord
 	{
 		return array(
 			'id' => Yii::t('attribute', 'ID'),
+			'license' => Yii::t('attribute', 'License Key'),
+			'permission' => Yii::t('attribute', 'Public Permission Defaults'),
+			'meta_keyword' => Yii::t('attribute', 'Meta Keyword'),
+			'meta_description' => Yii::t('attribute', 'Meta Description'),
 			'article_cat_id' => Yii::t('attribute', 'Article Cat'),
 			'modified_date' => Yii::t('attribute', 'Modified Date'),
 			'modified_id' => Yii::t('attribute', 'Modified'),
 			'modified_search' => Yii::t('attribute', 'Modified'),
 		);
-		/*
-			'ID' => 'ID',
-			'Article Cat' => 'Article Cat',
-			'Modified Date' => 'Modified Date',
-			'Modified' => 'Modified',
-		
-		*/
 	}
 
 	/**
@@ -123,15 +125,6 @@ class ArticleCollectionSetting extends CActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
-
-		$criteria->compare('t.id',$this->id);
-		$criteria->compare('t.article_cat_id',$this->article_cat_id);
-		if($this->modified_date != null && !in_array($this->modified_date, array('0000-00-00 00:00:00', '0000-00-00')))
-			$criteria->compare('date(t.modified_date)',date('Y-m-d', strtotime($this->modified_date)));
-		if(isset($_GET['modified']))
-			$criteria->compare('t.modified_id',$_GET['modified']);
-		else
-			$criteria->compare('t.modified_id',$this->modified_id);
 		
 		// Custom Search
 		$criteria->with = array(
@@ -140,6 +133,20 @@ class ArticleCollectionSetting extends CActiveRecord
 				'select'=>'displayname'
 			),
 		);
+
+		$criteria->compare('t.id',$this->id);
+		$criteria->compare('t.license',$this->license,true);
+		$criteria->compare('t.permission',$this->permission);
+		$criteria->compare('t.meta_keyword',$this->meta_keyword,true);
+		$criteria->compare('t.meta_description',$this->meta_description,true);
+		$criteria->compare('t.article_cat_id',$this->article_cat_id);
+		if($this->modified_date != null && !in_array($this->modified_date, array('0000-00-00 00:00:00', '0000-00-00')))
+			$criteria->compare('date(t.modified_date)',date('Y-m-d', strtotime($this->modified_date)));
+		if(isset($_GET['modified']))
+			$criteria->compare('t.modified_id',$_GET['modified']);
+		else
+			$criteria->compare('t.modified_id',$this->modified_id);
+		
 		$criteria->compare('modified.displayname',strtolower($this->modified_search), true);
 
 		if(!isset($_GET['ArticleCollectionSetting_sort']))
@@ -172,6 +179,10 @@ class ArticleCollectionSetting extends CActiveRecord
 			}
 		} else {
 			//$this->defaultColumns[] = 'id';
+			$this->defaultColumns[] = 'license';
+			$this->defaultColumns[] = 'permission';
+			$this->defaultColumns[] = 'meta_keyword';
+			$this->defaultColumns[] = 'meta_description';
 			$this->defaultColumns[] = 'article_cat_id';
 			$this->defaultColumns[] = 'modified_date';
 			$this->defaultColumns[] = 'modified_id';
@@ -185,6 +196,10 @@ class ArticleCollectionSetting extends CActiveRecord
 	 */
 	protected function afterConstruct() {
 		if(count($this->defaultColumns) == 0) {
+			$this->defaultColumns[] = 'license';
+			$this->defaultColumns[] = 'permission';
+			$this->defaultColumns[] = 'meta_keyword';
+			$this->defaultColumns[] = 'meta_description';
 			$this->defaultColumns[] = 'article_cat_id';
 			$this->defaultColumns[] = 'modified_date';
 			$this->defaultColumns[] = array(
@@ -210,6 +225,33 @@ class ArticleCollectionSetting extends CActiveRecord
 			$model = self::model()->findByPk($id);
 			return $model;			
 		}
+	}
+
+	/**
+	 * get Module License
+	 */
+	public static function getLicense($source='1234567890', $length=16, $char=4)
+	{
+		$mod = $length%$char;
+		if($mod == 0)
+			$sep = ($length/$char);
+		else
+			$sep = (int)($length/$char)+1;
+		
+		$sourceLength = strlen($source);
+		$random = '';
+		for ($i = 0; $i < $length; $i++)
+			$random .= $source[rand(0, $sourceLength - 1)];
+		
+		$license = '';
+		for ($i = 0; $i < $sep; $i++) {
+			if($i != $sep-1)
+				$license .= substr($random,($i*$char),$char).'-';
+			else
+				$license .= substr($random,($i*$char),$char);
+		}
+
+		return $license;
 	}
 
 	/**
