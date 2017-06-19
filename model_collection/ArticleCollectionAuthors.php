@@ -36,9 +36,10 @@
 class ArticleCollectionAuthors extends CActiveRecord
 {
 	public $defaultColumns = array();
-	public $author_input;
+	public $author_i;
 	
 	// Variable Search
+	public $category_search;
 	public $collection_search;
 	public $author_search;
 	public $creation_search;
@@ -72,10 +73,12 @@ class ArticleCollectionAuthors extends CActiveRecord
 		return array(
 			array('collection_id, author_id', 'required'),
 			array('collection_id, author_id, creation_id', 'length', 'max'=>11),
+			array(' 
+				author_i', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, collection_id, author_id, creation_date, creation_id,
-				collection_search, author_search, creation_search', 'safe', 'on'=>'search'),
+				category_search, collection_search, author_search, creation_search', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -104,18 +107,11 @@ class ArticleCollectionAuthors extends CActiveRecord
 			'author_id' => Yii::t('attribute', 'Author'),
 			'creation_date' => Yii::t('attribute', 'Creation Date'),
 			'creation_id' => Yii::t('attribute', 'Creation'),
+			'creation_search' => Yii::t('attribute', 'Creation'),
 			'collection_search' => Yii::t('attribute', 'Collection'),
 			'author_search' => Yii::t('attribute', 'Author'),
-			'creation_search' => Yii::t('attribute', 'Creation'),
+			'category_search' => Yii::t('attribute', 'Category'),
 		);
-		/*
-			'ID' => 'ID',
-			'Digital' => 'Digital',
-			'Author' => 'Author',
-			'Creation Date' => 'Creation Date',
-			'Creation' => 'Creation',
-		
-		*/
 	}
 
 	/**
@@ -135,6 +131,26 @@ class ArticleCollectionAuthors extends CActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
+		
+		// Custom Search
+		$criteria->with = array(
+			'collection' => array(
+				'alias'=>'collection',
+				'select'=>'cat_id, article_id',
+			),
+			'collection.article' => array(
+				'alias'=>'collection_article',
+				'select'=>'title',
+			),
+			'author' => array(
+				'alias'=>'author',
+				'select'=>'author_name',
+			),
+			'creation' => array(
+				'alias'=>'creation',
+				'select'=>'displayname',
+			),
+		);
 
 		$criteria->compare('t.id',strtolower($this->id),true);
 		if(isset($_GET['collection']))
@@ -152,22 +168,8 @@ class ArticleCollectionAuthors extends CActiveRecord
 		else
 			$criteria->compare('t.creation_id',$this->creation_id);
 		
-		// Custom Search
-		$criteria->with = array(
-			'collection' => array(
-				'alias'=>'collection',
-				'select'=>'collection_title',
-			),
-			'author' => array(
-				'alias'=>'author',
-				'select'=>'author_name',
-			),
-			'creation' => array(
-				'alias'=>'creation',
-				'select'=>'displayname',
-			),
-		);
-		$criteria->compare('collection.collection_title',strtolower($this->collection_search), true);
+		$criteria->compare('collection.cat_id',$this->category_search);
+		$criteria->compare('collection_article.title',strtolower($this->collection_search), true);
 		$criteria->compare('author.author_name',strtolower($this->author_search), true);
 		$criteria->compare('creation.displayname',strtolower($this->creation_search), true);
 
@@ -215,22 +217,20 @@ class ArticleCollectionAuthors extends CActiveRecord
 	 */
 	protected function afterConstruct() {
 		if(count($this->defaultColumns) == 0) {
-			/*
-			$this->defaultColumns[] = array(
-				'class' => 'CCheckBoxColumn',
-				'name' => 'id',
-				'selectableRows' => 2,
-				'checkBoxHtmlOptions' => array('name' => 'trash_id[]')
-			);
-			*/
 			$this->defaultColumns[] = array(
 				'header' => 'No',
 				'value' => '$this->grid->dataProvider->pagination->currentPage*$this->grid->dataProvider->pagination->pageSize + $row+1'
 			);
 			if(!isset($_GET['collection'])) {
 				$this->defaultColumns[] = array(
+					'name' => 'category_search',
+					'value' => '$data->collection->category->category_name',
+					'filter'=> ArticleCollectionCategory::getCategory(),
+					'type' => 'raw',
+				);
+				$this->defaultColumns[] = array(
 					'name' => 'collection_search',
-					'value' => '$data->collection->collection_title',
+					'value' => '$data->collection->article->title',
 				);
 			}
 			if(!isset($_GET['author'])) {
@@ -308,18 +308,19 @@ class ArticleCollectionAuthors extends CActiveRecord
 		if(parent::beforeSave()) {
 			if($this->isNewRecord) {
 				if($this->author_id == 0) {
+					$author_i = trim($this->author_i);
 					$author = ArticleCollectionAuthor::model()->find(array(
 						'select' => 'author_id, author_name',
 						'condition' => 'author_name = :name',
 						'params' => array(
-							':name' => $this->author_input,
+							':name' => $author_i,
 						),
 					));
 					if($author != null) {
 						$this->author_id = $author->author_id;
 					} else {
 						$data = new ArticleCollectionAuthor;
-						$data->author_name = $this->author_input;
+						$data->author_name = $author_i;
 						if($data->save()) {
 							$this->author_id = $data->author_id;
 						}

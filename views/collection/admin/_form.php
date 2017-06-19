@@ -94,20 +94,20 @@
 				</div>
 				
 				<div class="clearfix">
-					<?php echo $form->labelEx($model,'author_input'); ?>
+					<?php echo $form->labelEx($model,'author_i'); ?>
 					<div class="desc">
 						<?php 
 						if($model->isNewRecord) {
-							echo $form->textArea($model,'author_input',array('rows'=>6, 'cols'=>50, 'class'=>'span-10 smaller'));
+							echo $form->textArea($model,'author_i',array('rows'=>6, 'cols'=>50, 'class'=>'span-10 smaller'));
 							
 						} else {
-							//echo $form->textField($model,'author_input',array('maxlength'=>32,'class'=>'span-6'));
+							//echo $form->textField($model,'author_i',array('maxlength'=>32,'class'=>'span-6'));
 							$url = Yii::app()->controller->createUrl('collection/authors/add', array('hook'=>'collection','plugin'=>'collection'));
 							$collection = $model->collection_id;
-							$authorId = 'ArticleCollections_author_input';
+							$authorId = 'ArticleCollections_author_i';
 							$this->widget('zii.widgets.jui.CJuiAutoComplete', array(
 								'model' => $model,
-								'attribute' => 'author_input',
+								'attribute' => 'author_i',
 								'source' => Yii::app()->controller->createUrl('collection/author/suggest'),
 								'options' => array(
 									//'delay '=> 50,
@@ -131,7 +131,7 @@
 									'class'	=> 'span-7',
 								),
 							));
-							echo $form->error($model,'author_input');
+							echo $form->error($model,'author_i');
 						}?>
 						<div id="author-suggest" class="suggest clearfix">
 							<?php 

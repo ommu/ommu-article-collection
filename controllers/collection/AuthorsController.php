@@ -125,7 +125,7 @@ class AuthorsController extends Controller
 		}
 		$columns = $model->getGridColumn($columnTemp);
 
-		$this->pageTitle = Yii::t('phrase', 'Article Collection Authors Manage');
+		$this->pageTitle = Yii::t('phrase', 'Collection Authors');
 		$this->pageDescription = '';
 		$this->pageMeta = '';
 		$this->render('admin_manage',array(
@@ -148,7 +148,7 @@ class AuthorsController extends Controller
 		if(isset($_POST['collection_id'], $_POST['author_id'], $_POST['author'])) {
 			$model->collection_id = $_POST['collection_id'];
 			$model->author_id = $_POST['author_id'];
-			$model->author_input = $_POST['author'];
+			$model->author_i = $_POST['author'];
 
 			if($model->save()) {
 				if(isset($_GET['hook']) && $_GET['hook'] == 'collection')
@@ -185,7 +185,7 @@ class AuthorsController extends Controller
 						'type' => 5,
 						'get' => Yii::app()->controller->createUrl('manage', array('plugin'=>'collection')),
 						'id' => 'partial-article-collection-authors',
-						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'ArticleCollectionAuthors success deleted.').'</strong></div>',
+						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'Collection authors success deleted.').'</strong></div>',
 					));
 				}
 			}
@@ -200,7 +200,7 @@ class AuthorsController extends Controller
 			$this->dialogGroundUrl = $url;
 			$this->dialogWidth = 350;
 
-			$this->pageTitle = Yii::t('phrase', 'ArticleCollectionAuthors Delete.');
+			$this->pageTitle = Yii::t('phrase', 'Delete Author $author_name: $collection_title', array('$author_name'=>$model->author->author_name, '$collection_title'=>$model->collection->article->title));
 			$this->pageDescription = '';
 			$this->pageMeta = '';
 			$this->render('admin_delete');

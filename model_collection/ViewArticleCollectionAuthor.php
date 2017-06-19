@@ -25,8 +25,7 @@
  * The followings are the available columns in table '_view_article_collection_author':
  * @property string $author_id
  * @property string $collections
- * @property string $collection_publish
- * @property string $collection_unpublish
+ * @property string $collection_all
  */
 class ViewArticleCollectionAuthor extends CActiveRecord
 {
@@ -69,10 +68,10 @@ class ViewArticleCollectionAuthor extends CActiveRecord
 		return array(
 			array('author_id', 'length', 'max'=>11),
 			array('collections', 'length', 'max'=>21),
-			array('collection_publish, collection_unpublish', 'length', 'max'=>23),
+			array('collection_all', 'length', 'max'=>23),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('author_id, collections, collection_publish, collection_unpublish', 'safe', 'on'=>'search'),
+			array('author_id, collections, collection_all', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -95,16 +94,8 @@ class ViewArticleCollectionAuthor extends CActiveRecord
 		return array(
 			'author_id' => Yii::t('attribute', 'Author'),
 			'collections' => Yii::t('attribute', 'Collections'),
-			'collection_publish' => Yii::t('attribute', 'Collection Publish'),
-			'collection_unpublish' => Yii::t('attribute', 'Collection Unpublish'),
+			'collection_all' => Yii::t('attribute', 'Collection All'),
 		);
-		/*
-			'Author' => 'Author',
-			'Collections' => 'Collections',
-			'Collection Publish' => 'Collection Publish',
-			'Collection Unpublish' => 'Collection Unpublish',
-		
-		*/
 	}
 
 	/**
@@ -127,8 +118,7 @@ class ViewArticleCollectionAuthor extends CActiveRecord
 
 		$criteria->compare('t.author_id',strtolower($this->author_id),true);
 		$criteria->compare('t.collections',strtolower($this->collections),true);
-		$criteria->compare('t.collection_publish',strtolower($this->collection_publish),true);
-		$criteria->compare('t.collection_unpublish',strtolower($this->collection_unpublish),true);
+		$criteria->compare('t.collection_all',strtolower($this->collection_all),true);
 
 		if(!isset($_GET['ViewArticleCollectionAuthor_sort']))
 			$criteria->order = 't.author_id DESC';
@@ -161,8 +151,7 @@ class ViewArticleCollectionAuthor extends CActiveRecord
 		} else {
 			$this->defaultColumns[] = 'author_id';
 			$this->defaultColumns[] = 'collections';
-			$this->defaultColumns[] = 'collection_publish';
-			$this->defaultColumns[] = 'collection_unpublish';
+			$this->defaultColumns[] = 'collection_all';
 		}
 
 		return $this->defaultColumns;
@@ -173,22 +162,13 @@ class ViewArticleCollectionAuthor extends CActiveRecord
 	 */
 	protected function afterConstruct() {
 		if(count($this->defaultColumns) == 0) {
-			/*
-			$this->defaultColumns[] = array(
-				'class' => 'CCheckBoxColumn',
-				'name' => 'id',
-				'selectableRows' => 2,
-				'checkBoxHtmlOptions' => array('name' => 'trash_id[]')
-			);
-			*/
 			$this->defaultColumns[] = array(
 				'header' => 'No',
 				'value' => '$this->grid->dataProvider->pagination->currentPage*$this->grid->dataProvider->pagination->pageSize + $row+1'
 			);
 			$this->defaultColumns[] = 'author_id';
 			$this->defaultColumns[] = 'collections';
-			$this->defaultColumns[] = 'collection_publish';
-			$this->defaultColumns[] = 'collection_unpublish';
+			$this->defaultColumns[] = 'collection_all';
 		}
 		parent::afterConstruct();
 	}
