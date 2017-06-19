@@ -10,6 +10,7 @@
  * TOC :
  *	Index
  *	Edit
+ *	Manual
  *
  *	LoadModel
  *	performAjaxValidation
@@ -42,12 +43,10 @@ class SettingController extends Controller
 				$arrThemes = Utility::getCurrentTemplate('admin');
 				Yii::app()->theme = $arrThemes['folder'];
 				$this->layout = $arrThemes['layout'];
-			} else {
-				$this->redirect(Yii::app()->createUrl('site/login'));
-			}
-		} else {
+			} else
+				throw new CHttpException(404, Yii::t('phrase', 'The requested page does not exist.'));
+		} else
 			$this->redirect(Yii::app()->createUrl('site/login'));
-		}
 	}
 
 	/**
@@ -84,6 +83,11 @@ class SettingController extends Controller
 				'users'=>array('@'),
 				'expression'=>'isset(Yii::app()->user->level) && (Yii::app()->user->level == 1)',
 			),
+			array('allow', // allow authenticated user to perform 'create' and 'update' actions
+				'actions'=>array('manual'),
+				'users'=>array('@'),
+				'expression'=>'isset(Yii::app()->user->level) && (in_array(Yii::app()->user->level, array(1,2)))',
+			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array(),
 				'users'=>array('admin'),
@@ -109,6 +113,9 @@ class SettingController extends Controller
 	 */
 	public function actionEdit() 
 	{
+		if(Yii::app()->user->level != 1)
+			throw new CHttpException(404, Yii::t('phrase', 'The requested page does not exist.'));
+		
 		$model = ArticleCollectionSetting::model()->findByPk(1);
 		if($model == null)
 			$model=new ArticleCollectionSetting;
@@ -121,16 +128,25 @@ class SettingController extends Controller
 			
 			$jsonError = CActiveForm::validate($model);
 			if(strlen($jsonError) > 2) {
-				echo $jsonError;
+				$errors = $model->getErrors();
+				$summary['msg'] = "<div class='errorSummary'><strong>".Yii::t('phrase', 'Please fix the following input errors:')."</strong>";
+				$summary['msg'] .= "<ul>";
+				foreach($errors as $key => $value) {
+					$summary['msg'] .= "<li>{$value[0]}</li>";
+				}
+				$summary['msg'] .= "</ul></div>";
+
+				$message = json_decode($jsonError, true);
+				$merge = array_merge_recursive($summary, $message);
+				$encode = json_encode($merge);
+				echo $encode;
 
 			} else {
 				if(isset($_GET['enablesave']) && $_GET['enablesave'] == 1) {
 					if($model->save()) {
 						echo CJSON::encode(array(
-							'type' => 5,
-							'get' => Yii::app()->controller->createUrl('collection/admin/manage', array('plugin'=>'collection')),
-							'id' => 'partial-article-collection-setting',
-							'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'ArticleCollectionSetting success updated.').'</strong></div>',
+							'type' => 0,
+							'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'Collection Setting success updated.').'</strong></div>',
 						));
 					} else {
 						print_r($model->getErrors());
@@ -140,15 +156,30 @@ class SettingController extends Controller
 			Yii::app()->end();
 		}
 		
-		$this->dialogDetail = true;
-		$this->dialogGroundUrl = Yii::app()->controller->createUrl('collection/admin/manage', array('plugin'=>'collection'));
-		$this->dialogWidth = 500;
-
 		$this->pageTitle = Yii::t('phrase', 'Update Article Collection Settings');
 		$this->pageDescription = '';
 		$this->pageMeta = '';
 		$this->render('admin_edit',array(
 			'model'=>$model,
+		));
+	}
+	
+	/**
+	 * Lists all models.
+	 */
+	public function actionManual() 
+	{
+		$manual_path = $this->module->basePath.'/assets/collection';
+		
+		$this->dialogDetail = true;
+		$this->dialogGroundUrl = Yii::app()->controller->createUrl('collection/admin/manage', array('plugin'=>'collection'));
+		$this->dialogWidth = 400;
+		
+		$this->pageTitle = Yii::t('phrase', 'Collection Manual Book');
+		$this->pageDescription = '';
+		$this->pageMeta = '';
+		$this->render('admin_manual', array(
+			'manual_path'=>$manual_path,			
 		));
 	}
 
