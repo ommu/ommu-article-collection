@@ -80,6 +80,25 @@
 		</div>
 
 		<div class="clearfix">
+			<?php echo $form->labelEx($model,'gridview_column'); ?>
+			<div class="desc">
+				<?php 
+				$customField = array(
+					'publish_year' => $collection->getAttributeLabel('publish_year'),
+					'publish_location' => $collection->getAttributeLabel('publish_location'),
+					'creation_search' => $collection->getAttributeLabel('creation_search'),
+					'creation_date' => $collection->getAttributeLabel('creation_date'),
+					'author_search' => $collection->getAttributeLabel('author_search'),
+					'subject_search' => $collection->getAttributeLabel('subject_search'),
+				);
+				if(!$model->getErrors())
+					$model->gridview_column = unserialize($model->gridview_column);
+				echo $form->checkBoxList($model,'gridview_column', $customField); ?>
+				<?php echo $form->error($model,'gridview_column'); ?>
+			</div>
+		</div>
+
+		<div class="clearfix">
 			<?php echo $form->labelEx($model,'article_cat_id'); ?>
 			<div class="desc">
 				<?php 

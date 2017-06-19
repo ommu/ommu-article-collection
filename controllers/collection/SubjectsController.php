@@ -105,12 +105,16 @@ class SubjectsController extends Controller
 	/**
 	 * Manages all models.
 	 */
-	public function actionManage($tag=null) 
+	public function actionManage($collection=null, $tag=null) 
 	{
-		$pageTitle = Yii::t('phrase', 'Subject Data');
+		$pageTitle = Yii::t('phrase', 'Subjects Data');
+		if($collection != null) {
+			$data = ArticleCollections::model()->findByPk($collection);
+			$pageTitle = Yii::t('phrase', 'Subjects Data: Collection $collection_name', array ('$collection_name'=>$data->article->title));
+		}
 		if($tag != null) {
 			$data = ViewArticleCollectionSubject::model()->findByPk($tag);
-			$pageTitle = Yii::t('phrase', 'Subject Data: $subject_name', array ('$subject_name'=>$data->tag->body));
+			$pageTitle = Yii::t('phrase', 'Subjects Data: Subject $subject_name', array ('$subject_name'=>$data->tag->body));
 		}
 		
 		$model=new ArticleCollectionSubjects('search');

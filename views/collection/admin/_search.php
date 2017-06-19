@@ -22,7 +22,7 @@
 	<ul>
 		<li>
 			<?php echo $model->getAttributeLabel('collection_id'); ?><br/>
-			<?php echo $form->textField($model,'collection_id',array('size'=>11,'maxlength'=>11)); ?>
+			<?php echo $form->textField($model,'collection_id'); ?>
 		</li>
 
 		<li>
@@ -37,37 +37,37 @@
 
 		<li>
 			<?php echo $model->getAttributeLabel('article_id'); ?><br/>
-			<?php echo $form->textField($model,'article_id',array('size'=>11,'maxlength'=>11)); ?>
+			<?php echo $form->textField($model,'article_id'); ?>
 		</li>
 
 		<li>
 			<?php echo $model->getAttributeLabel('publisher_id'); ?><br/>
-			<?php echo $form->textField($model,'publisher_id',array('size'=>11,'maxlength'=>11)); ?>
+			<?php echo $form->textField($model,'publisher_id'); ?>
 		</li>
 
 		<li>
 			<?php echo $model->getAttributeLabel('publish_year'); ?><br/>
-			<?php echo $form->textField($model,'publish_year',array('size'=>4,'maxlength'=>4)); ?>
+			<?php echo $form->textField($model,'publish_year'); ?>
 		</li>
 
 		<li>
 			<?php echo $model->getAttributeLabel('publish_location'); ?><br/>
-			<?php echo $form->textField($model,'publish_location',array('size'=>60,'maxlength'=>64)); ?>
+			<?php echo $form->textField($model,'publish_location'); ?>
 		</li>
 
 		<li>
 			<?php echo $model->getAttributeLabel('isbn'); ?><br/>
-			<?php echo $form->textField($model,'isbn',array('size'=>32,'maxlength'=>32)); ?>
+			<?php echo $form->textField($model,'isbn'); ?>
 		</li>
 
 		<li>
 			<?php echo $model->getAttributeLabel('pages'); ?><br/>
-			<?php echo $form->textArea($model,'pages',array('rows'=>6, 'cols'=>50)); ?>
+			<?php echo $form->textArea($model,'pages'); ?>
 		</li>
 
 		<li>
 			<?php echo $model->getAttributeLabel('series'); ?><br/>
-			<?php echo $form->textArea($model,'series',array('rows'=>6, 'cols'=>50)); ?>
+			<?php echo $form->textArea($model,'series'); ?>
 		</li>
 
 		<li>
@@ -77,7 +77,7 @@
 
 		<li>
 			<?php echo $model->getAttributeLabel('creation_id'); ?><br/>
-			<?php echo $form->textField($model,'creation_id',array('size'=>11,'maxlength'=>11)); ?>
+			<?php echo $form->textField($model,'creation_id'); ?>
 		</li>
 
 		<li>
@@ -87,7 +87,7 @@
 
 		<li>
 			<?php echo $model->getAttributeLabel('modified_id'); ?><br/>
-			<?php echo $form->textField($model,'modified_id',array('size'=>11,'maxlength'=>11)); ?>
+			<?php echo $form->textField($model,'modified_id'); ?>
 		</li>
 
 		<li class="submit">

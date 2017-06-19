@@ -28,6 +28,7 @@
  * @property integer $permission
  * @property string $meta_keyword
  * @property string $meta_description
+ * @property string $gridview_column
  * @property integer $article_cat_id
  * @property string $modified_date
  * @property string $modified_id
@@ -66,14 +67,14 @@ class ArticleCollectionSetting extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('license, permission, meta_keyword, meta_description, article_cat_id', 'required'),
+			array('license, permission, meta_keyword, meta_description, gridview_column, article_cat_id', 'required'),
 			array('permission, article_cat_id, modified_id', 'numerical', 'integerOnly'=>true),
 			array('modified_id', 'length', 'max'=>11),
 			array('license', 'length', 'max'=>32),
 			array('', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, license, permission, meta_keyword, meta_description, article_cat_id, modified_date, modified_id,
+			array('id, license, permission, meta_keyword, meta_description, gridview_column, article_cat_id, modified_date, modified_id,
 				modified_search', 'safe', 'on'=>'search'),
 		);
 	}
@@ -101,7 +102,8 @@ class ArticleCollectionSetting extends CActiveRecord
 			'permission' => Yii::t('attribute', 'Public Permission Defaults'),
 			'meta_keyword' => Yii::t('attribute', 'Meta Keyword'),
 			'meta_description' => Yii::t('attribute', 'Meta Description'),
-			'article_cat_id' => Yii::t('attribute', 'Article Cat'),
+			'gridview_column' => Yii::t('attribute', 'Gridview Column'),
+			'article_cat_id' => Yii::t('attribute', 'Article Category'),
 			'modified_date' => Yii::t('attribute', 'Modified Date'),
 			'modified_id' => Yii::t('attribute', 'Modified'),
 			'modified_search' => Yii::t('attribute', 'Modified'),
@@ -139,6 +141,7 @@ class ArticleCollectionSetting extends CActiveRecord
 		$criteria->compare('t.permission',$this->permission);
 		$criteria->compare('t.meta_keyword',$this->meta_keyword,true);
 		$criteria->compare('t.meta_description',$this->meta_description,true);
+		$criteria->compare('t.gridview_column',$this->gridview_column,true);
 		$criteria->compare('t.article_cat_id',$this->article_cat_id);
 		if($this->modified_date != null && !in_array($this->modified_date, array('0000-00-00 00:00:00', '0000-00-00')))
 			$criteria->compare('date(t.modified_date)',date('Y-m-d', strtotime($this->modified_date)));
@@ -183,6 +186,7 @@ class ArticleCollectionSetting extends CActiveRecord
 			$this->defaultColumns[] = 'permission';
 			$this->defaultColumns[] = 'meta_keyword';
 			$this->defaultColumns[] = 'meta_description';
+			$this->defaultColumns[] = 'gridview_column';
 			$this->defaultColumns[] = 'article_cat_id';
 			$this->defaultColumns[] = 'modified_date';
 			$this->defaultColumns[] = 'modified_id';
@@ -200,6 +204,7 @@ class ArticleCollectionSetting extends CActiveRecord
 			$this->defaultColumns[] = 'permission';
 			$this->defaultColumns[] = 'meta_keyword';
 			$this->defaultColumns[] = 'meta_description';
+			$this->defaultColumns[] = 'gridview_column';
 			$this->defaultColumns[] = 'article_cat_id';
 			$this->defaultColumns[] = 'modified_date';
 			$this->defaultColumns[] = array(
@@ -213,16 +218,16 @@ class ArticleCollectionSetting extends CActiveRecord
 	/**
 	 * User get information
 	 */
-	public static function getInfo($id, $column=null)
+	public static function getInfo($column=null)
 	{
 		if($column != null) {
-			$model = self::model()->findByPk($id,array(
+			$model = self::model()->findByPk(1,array(
 				'select' => $column
 			));
 			return $model->$column;
 			
 		} else {
-			$model = self::model()->findByPk($id);
+			$model = self::model()->findByPk(1);
 			return $model;			
 		}
 	}
@@ -260,6 +265,16 @@ class ArticleCollectionSetting extends CActiveRecord
 	protected function beforeValidate() {
 		if(parent::beforeValidate()) {
 			$this->modified_id = Yii::app()->user->id;
+		}
+		return true;
+	}
+	
+	/**
+	 * before save attributes
+	 */
+	protected function beforeSave() {
+		if(parent::beforeSave()) {
+			$this->gridview_column = serialize($this->gridview_column);
 		}
 		return true;
 	}

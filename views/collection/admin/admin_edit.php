@@ -27,5 +27,7 @@
 		'article'=>$article,
 		'publisher'=>$publisher,
 		'setting'=>$setting,
+		'media_file_type'=>$media_file_type,
+		'upload_file_type'=>$upload_file_type,
 	)); ?>
 </div>

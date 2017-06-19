@@ -34,14 +34,14 @@
 	<?php //begin.Messages ?>
 	
 	<?php 
-	$article->cat_id = ArticleCollectionSetting::getInfo(1, 'article_cat_id');
+	$article->cat_id = ArticleCollectionSetting::getInfo('article_cat_id');
 	echo $form->hiddenField($article,'cat_id');
-	$article->article_type = 1;
+	$article->article_type = 'standard';
 	echo $form->hiddenField($article,'article_type');?>
 
 	<fieldset class="clearfix">
 		<div class="clear">
-			<div class="left">
+			<div class="left">	
 				<div class="clearfix">
 					<?php echo $form->labelEx($model,'cat_id'); ?>
 					<div class="desc">
@@ -55,7 +55,7 @@
 						<?php /*<div class="small-px silent"></div>*/?>
 					</div>
 				</div>
-	
+				
 				<div class="clearfix">
 					<label><?php echo $article->getAttributeLabel('title');?> <span class="required">*</span></label>
 					<div class="desc">
@@ -151,7 +151,10 @@
 				<div class="clearfix">
 					<?php echo $form->labelEx($model,'publish_year'); ?>
 					<div class="desc">
-						<?php echo $form->textField($model,'publish_year',array('maxlength'=>4, 'class'=>'span-3')); ?>
+						<?php 
+						if(!$model->getErrors())
+							$model->publish_year = !$model->isNewRecord ? (!in_array($model->publish_year, array('0000','1970')) ? $model->publish_year : '') : '';
+						echo $form->textField($model,'publish_year',array('maxlength'=>4, 'class'=>'span-3')); ?>
 						<?php echo $form->error($model,'publish_year'); ?>
 						<?php /*<div class="small-px silent"></div>*/?>
 					</div>
@@ -194,20 +197,20 @@
 				</div>
 				
 				<div class="clearfix">
-					<?php echo $form->labelEx($model,'subject_input'); ?>
+					<?php echo $form->labelEx($model,'subject_i'); ?>
 					<div class="desc">
 						<?php 
 						if($model->isNewRecord) {
-							echo $form->textArea($model,'subject_input',array('rows'=>6, 'cols'=>50, 'class'=>'span-10 smaller'));
+							echo $form->textArea($model,'subject_i',array('rows'=>6, 'cols'=>50, 'class'=>'span-10 smaller'));
 							
 						} else {
-							//echo $form->textField($model,'subject_input',array('maxlength'=>32,'class'=>'span-6'));
+							//echo $form->textField($model,'subject_i',array('maxlength'=>32,'class'=>'span-6'));
 							$url = Yii::app()->controller->createUrl('collection/subjects/add', array('hook'=>'collection'));
 							$collection = $model->collection_id;
-							$subjectId = 'ArticleCollections_subject_input';
+							$subjectId = 'ArticleCollections_subject_i';
 							$this->widget('zii.widgets.jui.CJuiAutoComplete', array(
 								'model' => $model,
-								'attribute' => 'subject_input',
+								'attribute' => 'subject_i',
 								'source' => Yii::app()->createUrl('globaltag/suggest'),
 								'options' => array(
 									//'delay '=> 50,
@@ -231,7 +234,7 @@
 									'class'	=> 'span-6',
 								),
 							));
-							echo $form->error($model,'subject_input');
+							echo $form->error($model,'subject_i');
 						}?>
 						<div id="subject-suggest" class="suggest clearfix">
 							<?php 
@@ -255,18 +258,19 @@
 					<div class="desc">
 						<?php 
 						if(!$article->isNewRecord) {
-							$article->old_media_input = $article->cover->media;
-							echo $form->hiddenField($article,'old_media_input');
-							if($article->media_id != 0) {
-								$image = Yii::app()->request->baseUrl.'/public/article/'.$article->article_id.'/'.$article->old_media_input;
-								if($article->article_type == 1) {?>
-									<img class="mb-10" src="<?php echo Utility::getTimThumb($image, 320, 150, 1);?>" alt="">
-						<?php 	}
-							}
+							$medias = $article->medias;
+							if(!empty($medias)) {
+								$media = $article->view->media_cover ? $article->view->media_cover : $medias[0]->media;
+								if(!$article->getErrors())
+									$article->old_media_input = $media;
+								echo $form->hiddenField($article,'old_media_input');
+								$image = Yii::app()->request->baseUrl.'/public/article/'.$article->article_id.'/'.$article->old_media_input;?>
+								<img class="mb-10" src="<?php echo Utility::getTimThumb($image, 320, 150, 1);?>" alt="">
+						<?php }
 						}
 						echo $form->fileField($article,'media_input'); ?>
 						<?php echo $form->error($article,'media_input'); ?>
-						<span class="small-px">extensions are allowed: <?php echo Utility::formatFileType(unserialize($setting->media_file_type), false);?></span>
+						<span class="small-px">extensions are allowed: <?php echo Utility::formatFileType($media_file_type, false);?></span>
 					</div>
 				</div>
 				
@@ -275,16 +279,17 @@
 					<div class="desc">
 						<?php 
 						if(!$article->isNewRecord) {
-							$article->old_media_file = $article->media_file;
-							echo $form->hiddenField($article,'old_media_file');
+							if(!$article->getErrors())
+								$article->old_media_file_input = $article->media_file;
+							echo $form->hiddenField($article,'old_media_file_input');
 							if($article->media_file != '') {
-								$file = Yii::app()->request->baseUrl.'/public/article/'.$article->article_id.'/'.$article->old_media_file;?>
-								<div class="mb-10"><a href="<?php echo $file;?>" title="<?php echo $article->old_media_file;?>"><?php echo $article->old_media_file;?></a></div>
+								$file = Yii::app()->request->baseUrl.'/public/article/'.$article->article_id.'/'.$article->old_media_file_input;?>
+								<div class="mb-10"><a href="<?php echo $file;?>" title="<?php echo $article->old_media_file_input;?>"><?php echo $article->old_media_file_input;?></a></div>
 						<?php }
 						}
 						echo $form->fileField($article,'media_file'); ?>
 						<?php echo $form->error($article,'media_file'); ?>
-						<span class="small-px">extensions are allowed: <?php echo Utility::formatFileType(unserialize($setting->upload_file_type), false);?></span>
+						<span class="small-px">extensions are allowed: <?php echo Utility::formatFileType($upload_file_type, false);?></span>
 					</div>
 				</div>
 	
@@ -294,7 +299,7 @@
 						<?php 
 						$article->published_date = $article->isNewRecord && $article->published_date == '' ? date('d-m-Y') : date('d-m-Y', strtotime($article->published_date));
 						//echo $form->textField($article,'published_date', array('class'=>'span-7'));
-						$this->widget('zii.widgets.jui.CJuiDatePicker',array(
+						$this->widget('application.components.system.CJuiDatePicker',array(
 							'model'=>$article, 
 							'attribute'=>'published_date',
 							//'mode'=>'datetime',
@@ -322,7 +327,7 @@
 					echo $form->hiddenField($article,'comment_code');
 				}?>
 	
-				<?php if(OmmuSettings::getInfo('site_headline') == 1) {?>
+				<?php if($setting->headline == 1) {?>
 				<div class="clearfix publish">
 					<?php echo $form->labelEx($article,'headline'); ?>
 					<div class="desc">

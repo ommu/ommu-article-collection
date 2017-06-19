@@ -119,6 +119,7 @@ class SettingController extends Controller
 		$model = ArticleCollectionSetting::model()->findByPk(1);
 		if($model == null)
 			$model=new ArticleCollectionSetting;
+		$collection=new ArticleCollections;
 
 		// Uncomment the following line if AJAX validation is needed
 		$this->performAjaxValidation($model);
@@ -161,6 +162,7 @@ class SettingController extends Controller
 		$this->pageMeta = '';
 		$this->render('admin_edit',array(
 			'model'=>$model,
+			'collection'=>$collection,
 		));
 	}
 	

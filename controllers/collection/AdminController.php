@@ -109,8 +109,18 @@ class AdminController extends Controller
 	/**
 	 * Manages all models.
 	 */
-	public function actionManage() 
+	public function actionManage($category=null, $publisher=null) 
 	{
+		$pageTitle = Yii::t('phrase', 'Collections');
+		if($category != null) {
+			$data = ArticleCollectionCategory::model()->findByPk($category);
+			$pageTitle = Yii::t('phrase', 'Collections: Category $category_name', array ('$category_name'=>$data->category_name));
+		}
+		if($publisher != null) {
+			$data = ArticleCollectionPublisher::model()->findByPk($publisher);
+			$pageTitle = Yii::t('phrase', 'Collections: Publisher $publisher_name', array ('$publisher_name'=>$data->publisher_name));
+		}
+		
 		$model=new ArticleCollections('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['ArticleCollections'])) {
@@ -127,7 +137,7 @@ class AdminController extends Controller
 		}
 		$columns = $model->getGridColumn($columnTemp);
 
-		$this->pageTitle = Yii::t('phrase', 'Article Collections Manage');
+		$this->pageTitle = $pageTitle;
 		$this->pageDescription = '';
 		$this->pageMeta = '';
 		$this->render('admin_manage',array(
@@ -146,8 +156,14 @@ class AdminController extends Controller
 		$article=new Articles;
 		$publisher=new ArticleCollectionPublisher;
 		$setting = ArticleSetting::model()->findByPk(1,array(
-			'select' => 'meta_keyword, type_active, media_file_type, upload_file_type',
+			'select' => 'meta_keyword, type_active, headline, media_file_type, upload_file_type',
 		));
+		$media_file_type = unserialize($setting->media_file_type);
+		if(empty($media_file_type))
+			$media_file_type = array();
+		$upload_file_type = unserialize($setting->upload_file_type);
+		if(empty($upload_file_type))
+			$upload_file_type = array();
 
 		// Uncomment the following line if AJAX validation is needed
 		$this->performAjaxValidation($model);
@@ -158,6 +174,8 @@ class AdminController extends Controller
 			$model->attributes=$_POST['ArticleCollections'];
 			$article->attributes=$_POST['Articles'];
 			$publisher->attributes=$_POST['ArticleCollectionPublisher'];
+			$article->scenario = 'formStandard';
+			
 			$article->validate();
 			$publisher->validate();
 			
@@ -184,14 +202,14 @@ class AdminController extends Controller
 					$model->article_id = $article->article_id;
 					
 					if($model->save()) {
-						Yii::app()->user->setFlash('success', Yii::t('phrase', 'ArticleCollections success created.'));
-						$this->redirect(array('edit','id'=>$model->collection_id));
+						Yii::app()->user->setFlash('success', Yii::t('phrase', 'Collections success created.'));
+						$this->redirect(array('edit','id'=>$model->collection_id, 'plugin'=>'collection'));
 					}
 				}
 			}
 		}
 
-		$this->pageTitle = Yii::t('phrase', 'Create Article Collections');
+		$this->pageTitle = Yii::t('phrase', 'Create Collection');
 		$this->pageDescription = '';
 		$this->pageMeta = '';
 		$this->render('admin_add',array(
@@ -199,6 +217,8 @@ class AdminController extends Controller
 			'article'=>$article,
 			'publisher'=>$publisher,
 			'setting'=>$setting,
+			'media_file_type'=>$media_file_type,
+			'upload_file_type'=>$upload_file_type,
 		));
 	}
 
@@ -213,8 +233,14 @@ class AdminController extends Controller
 		$article = Articles::model()->findByPk($model->article_id);
 		$publisher = ArticleCollectionPublisher::model()->findByPk($model->publisher_id);
 		$setting = ArticleSetting::model()->findByPk(1,array(
-			'select' => 'meta_keyword, type_active, media_file_type, upload_file_type',
+			'select' => 'meta_keyword, type_active, headline, media_file_type, upload_file_type',
 		));
+		$media_file_type = unserialize($setting->media_file_type);
+		if(empty($media_file_type))
+			$media_file_type = array();
+		$upload_file_type = unserialize($setting->upload_file_type);
+		if(empty($upload_file_type))
+			$upload_file_type = array();
 
 		// Uncomment the following line if AJAX validation is needed
 		$this->performAjaxValidation($model);
@@ -230,6 +256,8 @@ class AdminController extends Controller
 			$model->attributes=$_POST['ArticleCollections'];
 			$article->attributes=$_POST['Articles'];
 			$publisher->attributes=$_POST['ArticleCollectionPublisher'];
+			$article->scenario = 'formStandard';
+			
 			$article->validate();
 			$publisher->validate();
 			
@@ -258,14 +286,14 @@ class AdminController extends Controller
 					$model->article_id = $article->article_id;
 			
 					if($model->save()) {
-						Yii::app()->user->setFlash('success', Yii::t('phrase', 'ArticleCollections success updated.'));
-						$this->redirect(array('edit','id'=>$model->collection_id));
+						Yii::app()->user->setFlash('success', Yii::t('phrase', 'Collections success updated.'));
+						$this->redirect(array('edit','id'=>$model->collection_id, 'plugin'=>'collection'));
 					}
 				}
 			}
 		}
 
-		$this->pageTitle = Yii::t('phrase', 'Update Article Collections');
+		$this->pageTitle = Yii::t('phrase', 'Update Collection: $collection_name', array('$collection_name'=>$model->article->title));
 		$this->pageDescription = '';
 		$this->pageMeta = '';
 		$this->render('admin_edit',array(
@@ -273,6 +301,8 @@ class AdminController extends Controller
 			'article'=>$article,
 			'publisher'=>$publisher,
 			'setting'=>$setting,
+			'media_file_type'=>$media_file_type,
+			'upload_file_type'=>$upload_file_type,
 		));
 	}
 	
@@ -284,7 +314,7 @@ class AdminController extends Controller
 	{
 		$model=$this->loadModel($id);
 
-		$this->pageTitle = Yii::t('phrase', 'View Article Collections');
+		$this->pageTitle = Yii::t('phrase', 'View Collection: $collection_name', array('$collection_name'=>$model->article->title));
 		$this->pageDescription = '';
 		$this->pageMeta = '';
 		$this->render('admin_view',array(
@@ -345,7 +375,7 @@ class AdminController extends Controller
 						'type' => 5,
 						'get' => Yii::app()->controller->createUrl('manage', array('plugin'=>'collection')),
 						'id' => 'partial-article-collections',
-						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'ArticleCollections success deleted.').'</strong></div>',
+						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'Collections success deleted.').'</strong></div>',
 					));
 				}
 			}
@@ -355,7 +385,7 @@ class AdminController extends Controller
 			$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage', array('plugin'=>'collection'));
 			$this->dialogWidth = 350;
 
-			$this->pageTitle = Yii::t('phrase', 'ArticleCollections Delete.');
+			$this->pageTitle = Yii::t('phrase', 'Delete Collection: $collection_name', array('$collection_name'=>$model->article->title));
 			$this->pageDescription = '';
 			$this->pageMeta = '';
 			$this->render('admin_delete');
@@ -378,6 +408,7 @@ class AdminController extends Controller
 			$title = Yii::t('phrase', 'Publish');
 			$replace = 1;
 		}
+		$pageTitle = Yii::t('phrase', '{title} Collection: $collection_name', array('{title}'=>$title, '$collection_name'=>$model->article->title));
 
 		if(Yii::app()->request->isPostRequest) {
 			// we only allow deletion via POST request
@@ -390,7 +421,7 @@ class AdminController extends Controller
 						'type' => 5,
 						'get' => Yii::app()->controller->createUrl('manage', array('plugin'=>'collection')),
 						'id' => 'partial-article-collections',
-						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'ArticleCollections success updated.').'</strong></div>',
+						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'Collections success updated.').'</strong></div>',
 					));
 				}
 			}
@@ -400,7 +431,7 @@ class AdminController extends Controller
 			$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage', array('plugin'=>'collection'));
 			$this->dialogWidth = 350;
 
-			$this->pageTitle = $title;
+			$this->pageTitle = $pageTitle;
 			$this->pageDescription = '';
 			$this->pageMeta = '';
 			$this->render('admin_publish',array(

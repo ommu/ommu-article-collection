@@ -41,12 +41,14 @@
 class ArticleCollections extends CActiveRecord
 {
 	public $defaultColumns = array();
-	public $author_input;
-	public $subject_input;
+	public $author_i;
+	public $subject_i;
 	
 	// Variable Search
 	public $article_search;
 	public $publisher_search;
+	public $author_search;
+	public $subject_search;
 	public $creation_search;
 	public $modified_search;
 
@@ -84,11 +86,11 @@ class ArticleCollections extends CActiveRecord
 			array('publish_location', 'length', 'max'=>64),
 			array('isbn', 'length', 'max'=>32),
 			array('article_id, publisher_id, publish_year, publish_location, isbn, pages, series,
-				author_input, subject_input', 'safe'),
+				author_i, subject_i', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('collection_id, publish, cat_id, article_id, publisher_id, publish_year, publish_location, isbn, pages, series, creation_date, creation_id, modified_date, modified_id,
-				article_search, publisher_search, creation_search, modified_search', 'safe', 'on'=>'search'),
+				article_search, publisher_search, author_search, subject_search, creation_search, modified_search', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -100,6 +102,7 @@ class ArticleCollections extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'view' => array(self::BELONGS_TO, 'ViewArticleCollections', 'collection_id'),
 			'category' => array(self::BELONGS_TO, 'ArticleCollectionCategory', 'cat_id'),
 			'article' => array(self::BELONGS_TO, 'Articles', 'article_id'),
 			'publisher' => array(self::BELONGS_TO, 'ArticleCollectionPublisher', 'publisher_id'),
@@ -123,37 +126,25 @@ class ArticleCollections extends CActiveRecord
 			'publisher_id' => Yii::t('attribute', 'Publisher'),
 			'publish_year' => Yii::t('attribute', 'Publish Year'),
 			'publish_location' => Yii::t('attribute', 'Publish Location'),
-			'isbn' => Yii::t('attribute', 'Isbn'),
+			'isbn' => Yii::t('attribute', 'ISBN/ISSN/ISMN'),
 			'pages' => Yii::t('attribute', 'Pages'),
 			'series' => Yii::t('attribute', 'Series'),
 			'creation_date' => Yii::t('attribute', 'Creation Date'),
 			'creation_id' => Yii::t('attribute', 'Creation'),
 			'modified_date' => Yii::t('attribute', 'Modified Date'),
 			'modified_id' => Yii::t('attribute', 'Modified'),
-			'author_input' => Yii::t('attribute', 'Authors'),
-			'subject_input' => Yii::t('attribute', 'Subjects'),
+			'author_i' => Yii::t('attribute', 'Authors'),
+			'subject_i' => Yii::t('attribute', 'Subjects'),
 			'article_search' => Yii::t('attribute', 'Collection'),
 			'publisher_search' => Yii::t('attribute', 'Publisher'),
+			'author_search' => Yii::t('attribute', 'Authors'),
+			'subject_search' => Yii::t('attribute', 'Subjects'),
 			'creation_search' => Yii::t('attribute', 'Creation'),
 			'modified_search' => Yii::t('attribute', 'Modified'),
+			'title_i' => Yii::t('attribute', 'Title'),
+			'cover_i' => Yii::t('attribute', 'Media (Image)'),
+			'file_i' => Yii::t('attribute', 'File (Download)'),
 		);
-		/*
-			'Collection' => 'Collection',
-			'Publish' => 'Publish',
-			'Cat' => 'Cat',
-			'Article' => 'Article',
-			'Publisher' => 'Publisher',
-			'Publish Year' => 'Publish Year',
-			'Publish Location' => 'Publish Location',
-			'Isbn' => 'Isbn',
-			'Pages' => 'Pages',
-			'Series' => 'Series',
-			'Creation Date' => 'Creation Date',
-			'Creation' => 'Creation',
-			'Modified Date' => 'Modified Date',
-			'Modified' => 'Modified',
-		
-		*/
 	}
 
 	/**
@@ -176,6 +167,9 @@ class ArticleCollections extends CActiveRecord
 		
 		// Custom Search
 		$criteria->with = array(
+			'view' => array(
+				'alias'=>'view',
+			),
 			'article' => array(
 				'alias'=>'article',
 				'select'=>'title',
@@ -262,6 +256,8 @@ class ArticleCollections extends CActiveRecord
 		
 		$criteria->compare('article.title',strtolower($this->article_search), true);
 		$criteria->compare('publisher.publisher_name',strtolower($this->publisher_search), true);
+		$criteria->compare('view.authors',$this->author_search);
+		$criteria->compare('view.subjects',$this->subject_search);
 		$criteria->compare('creation.displayname',strtolower($this->creation_search), true);
 		$criteria->compare('modified.displayname',strtolower($this->modified_search), true);
 
@@ -316,7 +312,15 @@ class ArticleCollections extends CActiveRecord
 	/**
 	 * Set default columns to display
 	 */
-	protected function afterConstruct() {
+	protected function afterConstruct() 
+	{
+		$setting = ArticleCollectionSetting::model()->findByPk(1, array(
+			'select' => 'gridview_column',
+		));
+		$gridview_column = unserialize($setting->gridview_column);		
+		if(empty($gridview_column))
+			$gridview_column = array();
+		
 		if(count($this->defaultColumns) == 0) {
 			/*
 			$this->defaultColumns[] = array(
@@ -348,38 +352,72 @@ class ArticleCollections extends CActiveRecord
 					'value' => '$data->publisher->publisher_name',
 				);
 			}
-			$this->defaultColumns[] = 'publish_year';
-			$this->defaultColumns[] = 'publish_location';
-			$this->defaultColumns[] = array(
-				'name' => 'creation_search',
-				'value' => '$data->creation->displayname',
-			);
-			$this->defaultColumns[] = array(
-				'name' => 'creation_date',
-				'value' => 'Utility::dateFormat($data->creation_date)',
-				'htmlOptions' => array(
-					'class' => 'center',
-				),
-				'filter' => Yii::app()->controller->widget('zii.widgets.jui.CJuiDatePicker', array(
-					'model'=>$this,
-					'attribute'=>'creation_date',
-					'language' => 'ja',
-					'i18nScriptFile' => 'jquery.ui.datepicker-en.js',
-					//'mode'=>'datetime',
+			if(in_array('publish_year', $gridview_column)) {
+				$this->defaultColumns[] = array(
+					'name' => 'publish_year',
+					'value' => '!in_array($data->publish_year, array(\'0000\',\'1970\')) ? $data->publish_year : \'-\'',
+				);
+			}
+			if(in_array('publish_location', $gridview_column)) {
+				$this->defaultColumns[] = array(
+					'name' => 'publish_location',
+					'value' => '$data->publish_location',
+				);
+			}
+			if(in_array('creation_search', $gridview_column)) {
+				$this->defaultColumns[] = array(
+					'name' => 'creation_search',
+					'value' => '$data->creation->displayname',
+				);
+			}
+			if(in_array('creation_date', $gridview_column)) {
+				$this->defaultColumns[] = array(
+					'name' => 'creation_date',
+					'value' => 'Utility::dateFormat($data->creation_date)',
 					'htmlOptions' => array(
-						'id' => 'creation_date_filter',
+						'class' => 'center',
 					),
-					'options'=>array(
-						'showOn' => 'focus',
-						'dateFormat' => 'dd-mm-yy',
-						'showOtherMonths' => true,
-						'selectOtherMonths' => true,
-						'changeMonth' => true,
-						'changeYear' => true,
-						'showButtonPanel' => true,
+					'filter' => Yii::app()->controller->widget('application.components.system.CJuiDatePicker', array(
+						'model'=>$this,
+						'attribute'=>'creation_date',
+						'language' => 'en',
+						'i18nScriptFile' => 'jquery-ui-i18n.min.js',
+						//'mode'=>'datetime',
+						'htmlOptions' => array(
+							'id' => 'creation_date_filter',
+						),
+						'options'=>array(
+							'showOn' => 'focus',
+							'dateFormat' => 'dd-mm-yy',
+							'showOtherMonths' => true,
+							'selectOtherMonths' => true,
+							'changeMonth' => true,
+							'changeYear' => true,
+							'showButtonPanel' => true,
+						),
+					), true),
+				);
+			}
+			if(in_array('author_search', $gridview_column)) {
+				$this->defaultColumns[] = array(
+					'name' => 'author_search',
+					'value' => 'CHtml::link($data->view->authors ? $data->view->authors : 0, Yii::app()->controller->createUrl("collection/authors/manage",array(\'collection\'=>$data->collection_id,\'plugin\'=>\'collection\')))',
+					'htmlOptions' => array(
+						'class' => 'center',
 					),
-				), true),
-			);
+					'type' => 'raw',
+				);
+			}
+			if(in_array('subject_search', $gridview_column)) {
+				$this->defaultColumns[] = array(
+					'name' => 'subject_search',
+					'value' => 'CHtml::link($data->view->subjects ? $data->view->subjects : 0, Yii::app()->controller->createUrl("collection/subjects/manage",array(\'collection\'=>$data->collection_id,\'plugin\'=>\'collection\')))',
+					'htmlOptions' => array(
+						'class' => 'center',
+					),
+					'type' => 'raw',
+				);
+			}
 			if(!isset($_GET['type'])) {
 				$this->defaultColumns[] = array(
 					'name' => 'publish',
@@ -436,24 +474,24 @@ class ArticleCollections extends CActiveRecord
 		
 		if($this->isNewRecord) {			
 			//input author
-			if(trim($this->author_input) != '') {
-				$author_input = Utility::formatFileType($this->author_input, true, '#');
-				if(!empty($author_input)) {
-					foreach($author_input as $key => $val) {
+			if(trim($this->author_i) != '') {
+				$author_i = Utility::formatFileType($this->author_i, true, '#');
+				if(!empty($author_i)) {
+					foreach($author_i as $key => $val) {
 						$author = new ArticleCollectionAuthors;
 						$author->collection_id = $this->collection_id;
 						$author->author_id = 0;
-						$author->author_input = $val;
+						$author->author_i = $val;
 						$author->save();
 					}
 				}
 			}
 			
 			//input subject
-			if(trim($this->subject_input) != '') {
-				$subject_input = Utility::formatFileType($this->subject_input);
-				if(!empty($subject_input)) {
-					foreach($subject_input as $key => $val) {
+			if(trim($this->subject_i) != '') {
+				$subject_i = Utility::formatFileType($this->subject_i);
+				if(!empty($subject_i)) {
+					foreach($subject_i as $key => $val) {
 						$subject = new ArticleCollectionSubjects;
 						$subject->collection_id = $this->collection_id;
 						$subject->tag_id = 0;

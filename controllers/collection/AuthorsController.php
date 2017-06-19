@@ -105,12 +105,16 @@ class AuthorsController extends Controller
 	/**
 	 * Manages all models.
 	 */
-	public function actionManage($author=null) 
+	public function actionManage($collection=null, $author=null) 
 	{
-		$pageTitle = Yii::t('phrase', 'Author Data');
+		$pageTitle = Yii::t('phrase', 'Authors Data');
+		if($collection != null) {
+			$data = ArticleCollections::model()->findByPk($collection);
+			$pageTitle = Yii::t('phrase', 'Authors Data: Collection $collection_name', array ('$collection_name'=>$data->article->title));
+		}
 		if($author != null) {
 			$data = ArticleCollectionAuthor::model()->findByPk($author);
-			$pageTitle = Yii::t('phrase', 'Author Data: $author_name', array ('$author_name'=>$data->author_name));
+			$pageTitle = Yii::t('phrase', 'Authors Data: Author $author_name', array ('$author_name'=>$data->author_name));
 		}
 		
 		$model=new ArticleCollectionAuthors('search');

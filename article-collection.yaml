@@ -44,10 +44,16 @@ content_menu	:
 # controller collection/admin
 	- urlTitle: Add Collection
 		urlRules: {article, collection/admin, manage, siteType: "0,1", userLevel: "1,2"}
-		urlPath: {url: add, attr: -, icon: -}		
+		urlPath: {url: add, attr: -, icon: -}
 	- urlTitle: Back to Manage
 		urlRules: {article, collection/admin, "add,edit,view", siteType: "0,1", userLevel: "1,2"}
 		urlPath: {url: manage, attr: -, icon: -}
+	- urlTitle: View Collection
+		urlRules: {article, collection/admin, edit, siteType: "0,1", userLevel: "1,2"}
+		urlPath: {url: view, attr: id=$_GET*id, icon: -}
+	- urlTitle: Edit Collection
+		urlRules: {article, collection/admin, view, siteType: "0,1", userLevel: "1,2"}
+		urlPath: {url: edit, attr: id=$_GET*id, icon: -}
         
 # controller collection/category
 	- urlTitle: Add Category
