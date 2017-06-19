@@ -25,12 +25,14 @@
  * The followings are the available columns in table '_view_article_collection_subject':
  * @property string $tag_id
  * @property string $collections
- * @property string $collection_publish
- * @property string $collection_unpublish
+ * @property string $collection_all
  */
 class ViewArticleCollectionSubject extends CActiveRecord
 {
 	public $defaultColumns = array();
+	
+	// Variable Search
+	public $tag_search;
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -70,10 +72,11 @@ class ViewArticleCollectionSubject extends CActiveRecord
 			array('tag_id', 'required'),
 			array('tag_id', 'length', 'max'=>11),
 			array('collections', 'length', 'max'=>21),
-			array('collection_publish, collection_unpublish', 'length', 'max'=>23),
+			array('collection_all', 'length', 'max'=>23),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('tag_id, collections, collection_publish, collection_unpublish', 'safe', 'on'=>'search'),
+			array('tag_id, collections, collection_all,
+				tag_search', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -85,6 +88,7 @@ class ViewArticleCollectionSubject extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'tag' => array(self::BELONGS_TO, 'OmmuTags', 'tag_id'),
 		);
 	}
 
@@ -96,16 +100,9 @@ class ViewArticleCollectionSubject extends CActiveRecord
 		return array(
 			'tag_id' => Yii::t('attribute', 'Tag'),
 			'collections' => Yii::t('attribute', 'Collections'),
-			'collection_publish' => Yii::t('attribute', 'Collection Publish'),
-			'collection_unpublish' => Yii::t('attribute', 'Collection Unpublish'),
+			'collection_all' => Yii::t('attribute', 'Collection All'),
+			'tag_search' => Yii::t('attribute', 'Subject'),
 		);
-		/*
-			'Tag' => 'Tag',
-			'Collections' => 'Collections',
-			'Collection Publish' => 'Collection Publish',
-			'Collection Unpublish' => 'Collection Unpublish',
-		
-		*/
 	}
 
 	/**
@@ -125,11 +122,20 @@ class ViewArticleCollectionSubject extends CActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
+		
+		// Custom Search
+		$criteria->with = array(
+			'tag' => array(
+				'alias'=>'tag',
+				'select'=>'body',
+			),
+		);
 
-		$criteria->compare('t.tag_id',strtolower($this->tag_id),true);
-		$criteria->compare('t.collections',strtolower($this->collections),true);
-		$criteria->compare('t.collection_publish',strtolower($this->collection_publish),true);
-		$criteria->compare('t.collection_unpublish',strtolower($this->collection_unpublish),true);
+		$criteria->compare('t.tag_id',$this->tag_id);
+		$criteria->compare('t.collections',$this->collections);
+		$criteria->compare('t.collection_all',$this->collection_all);
+		
+		$criteria->compare('tag.body',strtolower($this->tag_search), true);
 
 		if(!isset($_GET['ViewArticleCollectionSubject_sort']))
 			$criteria->order = 't.tag_id DESC';
@@ -162,8 +168,7 @@ class ViewArticleCollectionSubject extends CActiveRecord
 		} else {
 			$this->defaultColumns[] = 'tag_id';
 			$this->defaultColumns[] = 'collections';
-			$this->defaultColumns[] = 'collection_publish';
-			$this->defaultColumns[] = 'collection_unpublish';
+			$this->defaultColumns[] = 'collection_all';
 		}
 
 		return $this->defaultColumns;
@@ -174,22 +179,22 @@ class ViewArticleCollectionSubject extends CActiveRecord
 	 */
 	protected function afterConstruct() {
 		if(count($this->defaultColumns) == 0) {
-			/*
-			$this->defaultColumns[] = array(
-				'class' => 'CCheckBoxColumn',
-				'name' => 'id',
-				'selectableRows' => 2,
-				'checkBoxHtmlOptions' => array('name' => 'trash_id[]')
-			);
-			*/
 			$this->defaultColumns[] = array(
 				'header' => 'No',
 				'value' => '$this->grid->dataProvider->pagination->currentPage*$this->grid->dataProvider->pagination->pageSize + $row+1'
 			);
-			$this->defaultColumns[] = 'tag_id';
-			$this->defaultColumns[] = 'collections';
-			$this->defaultColumns[] = 'collection_publish';
-			$this->defaultColumns[] = 'collection_unpublish';
+			$this->defaultColumns[] = array(
+				'name' => 'tag_search',
+				'value' => '$data->tag->body',
+			);
+			$this->defaultColumns[] = array(
+				'name' => 'collections',
+				'value' => 'CHtml::link($data->collections ? $data->collections : 0, Yii::app()->controller->createUrl("collection/subjects/manage",array(\'tag\'=>$data->tag_id,\'plugin\'=>\'collection\')))',
+				'htmlOptions' => array(
+					'class' => 'center',
+				),
+				'type' => 'raw',
+			);
 		}
 		parent::afterConstruct();
 	}

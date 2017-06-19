@@ -125,7 +125,7 @@ class SubjectsController extends Controller
 		}
 		$columns = $model->getGridColumn($columnTemp);
 
-		$this->pageTitle = Yii::t('phrase', 'Article Collection Subjects Manage');
+		$this->pageTitle = Yii::t('phrase', 'Collection Subjects');
 		$this->pageDescription = '';
 		$this->pageMeta = '';
 		$this->render('admin_manage',array(
@@ -148,7 +148,7 @@ class SubjectsController extends Controller
 		if(isset($_POST['collection_id'], $_POST['tag_id'], $_POST['subject'])) {
 			$model->collection_id = $_POST['collection_id'];
 			$model->tag_id = $_POST['tag_id'];
-			$model->tag_input = $_POST['subject'];
+			$model->tag_i = $_POST['subject'];
 
 			if($model->save()) {
 				if(isset($_GET['hook']) && $_GET['hook'] == 'collection')
@@ -185,7 +185,7 @@ class SubjectsController extends Controller
 						'type' => 5,
 						'get' => Yii::app()->controller->createUrl('manage', array('plugin'=>'collection')),
 						'id' => 'partial-article-collection-subjects',
-						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'ArticleCollectionSubjects success deleted.').'</strong></div>',
+						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'Collection subject success deleted.').'</strong></div>',
 					));
 				}
 			}
@@ -200,7 +200,7 @@ class SubjectsController extends Controller
 			$this->dialogGroundUrl = $url;
 			$this->dialogWidth = 350;
 
-			$this->pageTitle = Yii::t('phrase', 'ArticleCollectionSubjects Delete.');
+			$this->pageTitle = Yii::t('phrase', 'Delete Subject $subject_name: $collection_title', array('$subject_name'=>$model->tag->body, '$collection_title'=>$model->collection->article->title));
 			$this->pageDescription = '';
 			$this->pageMeta = '';
 			$this->render('admin_delete');

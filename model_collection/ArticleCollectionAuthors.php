@@ -108,9 +108,9 @@ class ArticleCollectionAuthors extends CActiveRecord
 			'creation_date' => Yii::t('attribute', 'Creation Date'),
 			'creation_id' => Yii::t('attribute', 'Creation'),
 			'creation_search' => Yii::t('attribute', 'Creation'),
+			'category_search' => Yii::t('attribute', 'Category'),
 			'collection_search' => Yii::t('attribute', 'Collection'),
 			'author_search' => Yii::t('attribute', 'Author'),
-			'category_search' => Yii::t('attribute', 'Category'),
 		);
 	}
 

@@ -75,26 +75,24 @@
 						'imageUrl' => false,
 						'options' => array(							
 							'class' => 'view',
-							'off_address' => '',
-							'target' => '_blank',
 						),
-						'url' => 'Yii::app()->controller->createUrl("site/view",array("id"=>$data->primaryKey))'),
+						'url' => 'Yii::app()->controller->createUrl("view",array("id"=>$data->primaryKey,\'plugin\'=>\'collection\'))'),
 					'update' => array(
 						'label' => 'update',
 						'imageUrl' => false,
 						'options' => array(
 							'class' => 'update'
 						),
-						'url' => 'Yii::app()->controller->createUrl("edit",array("id"=>$data->primaryKey))'),
+						'url' => 'Yii::app()->controller->createUrl("edit",array("id"=>$data->primaryKey,\'plugin\'=>\'collection\'))'),
 					'delete' => array(
 						'label' => 'delete',
 						'imageUrl' => false,
 						'options' => array(
 							'class' => 'delete'
 						),
-						'url' => 'Yii::app()->controller->createUrl("delete",array("id"=>$data->primaryKey))')
+						'url' => 'Yii::app()->controller->createUrl("delete",array("id"=>$data->primaryKey,\'plugin\'=>\'collection\'))')
 				),
-				'template' => '{view}|{update}|{delete}',
+				'template' => '{view}',
 			));
 
 			$this->widget('application.components.system.OGridView', array(

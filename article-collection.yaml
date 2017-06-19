@@ -30,7 +30,7 @@ plugin_menu		:
 				urlPath: {url: collection/author/manage, attr: -, icon: -}
 			- urlTitle: Subjects
 				urlRules: {siteType: "0,1", userLevel: "1,2"}
-				urlPath: {url: collection/subjects/manage, attr: -, icon: -}
+				urlPath: {url: collection/subject/manage, attr: -, icon: -}
 		
 	- urlTitle: Settings
 		urlRules: {siteType: "0,1", userLevel: 1}
@@ -47,7 +47,7 @@ content_menu	:
         
 # controller collection/category
 	- urlTitle: Add Category
-		urlRules: {article, collection/category, manage, siteType: "0,1", userLevel: "1,2"}
+		urlRules: {article, collection/category, manage, siteType: "0,1", userLevel: 1}
 		urlPath: {url: add, attr: -, icon: -}
         
 # controller collection/publisher
@@ -58,9 +58,4 @@ content_menu	:
 # controller collection/author
 	- urlTitle: Add Author
 		urlRules: {article, collection/author, manage, siteType: "0,1", userLevel: "1,2"}
-		urlPath: {url: add, attr: -, icon: -}
-        
-# controller collection/subject
-	- urlTitle: Add Subject
-		urlRules: {article, collection/subject, manage, siteType: "0,1", userLevel: "1,2"}
 		urlPath: {url: add, attr: -, icon: -}

@@ -36,9 +36,10 @@
 class ArticleCollectionSubjects extends CActiveRecord
 {
 	public $defaultColumns = array();
-	public $tag_input;
+	public $tag_i;
 	
 	// Variable Search
+	public $category_search;
 	public $collection_search;
 	public $tag_search;
 	public $creation_search;
@@ -72,10 +73,12 @@ class ArticleCollectionSubjects extends CActiveRecord
 		return array(
 			array('collection_id, tag_id', 'required'),
 			array('collection_id, tag_id, creation_id', 'length', 'max'=>11),
+			array(' 
+				tag_i', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, collection_id, tag_id, creation_date, creation_id,
-				collection_search, tag_search, creation_search', 'safe', 'on'=>'search'),
+				category_search, collection_search, tag_search, creation_search', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -104,18 +107,11 @@ class ArticleCollectionSubjects extends CActiveRecord
 			'tag_id' => Yii::t('attribute', 'Subject'),
 			'creation_date' => Yii::t('attribute', 'Creation Date'),
 			'creation_id' => Yii::t('attribute', 'Creation'),
+			'category_search' => Yii::t('attribute', 'Category'),
 			'collection_search' => Yii::t('attribute', 'Collection'),
 			'tag_search' => Yii::t('attribute', 'Subject'),
 			'creation_search' => Yii::t('attribute', 'Creation'),
 		);
-		/*
-			'ID' => 'ID',
-			'Digital' => 'Digital',
-			'Author' => 'Author',
-			'Creation Date' => 'Creation Date',
-			'Creation' => 'Creation',
-		
-		*/
 	}
 
 	/**
@@ -135,6 +131,26 @@ class ArticleCollectionSubjects extends CActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
+		
+		// Custom Search
+		$criteria->with = array(
+			'collection' => array(
+				'alias'=>'collection',
+				'select'=>'cat_id, article_id',
+			),
+			'collection.article' => array(
+				'alias'=>'collection_article',
+				'select'=>'title',
+			),
+			'tag' => array(
+				'alias'=>'tag',
+				'select'=>'body',
+			),
+			'creation' => array(
+				'alias'=>'creation',
+				'select'=>'displayname',
+			),
+		);
 
 		$criteria->compare('t.id',strtolower($this->id),true);
 		if(isset($_GET['collection']))
@@ -152,22 +168,8 @@ class ArticleCollectionSubjects extends CActiveRecord
 		else
 			$criteria->compare('t.creation_id',$this->creation_id);
 		
-		// Custom Search
-		$criteria->with = array(
-			'collection.article' => array(
-				'alias'=>'collections',
-				'select'=>'title',
-			),
-			'tag' => array(
-				'alias'=>'tag',
-				'select'=>'body',
-			),
-			'creation' => array(
-				'alias'=>'creation',
-				'select'=>'displayname',
-			),
-		);
-		$criteria->compare('collections.title',strtolower($this->collection_search), true);
+		$criteria->compare('collection.cat_id',$this->category_search);
+		$criteria->compare('collection_article.title',strtolower($this->collection_search), true);
 		$criteria->compare('tag.body',strtolower($this->tag_search), true);
 		$criteria->compare('creation.displayname',strtolower($this->creation_search), true);
 
@@ -215,19 +217,17 @@ class ArticleCollectionSubjects extends CActiveRecord
 	 */
 	protected function afterConstruct() {
 		if(count($this->defaultColumns) == 0) {
-			/*
-			$this->defaultColumns[] = array(
-				'class' => 'CCheckBoxColumn',
-				'name' => 'id',
-				'selectableRows' => 2,
-				'checkBoxHtmlOptions' => array('name' => 'trash_id[]')
-			);
-			*/
 			$this->defaultColumns[] = array(
 				'header' => 'No',
 				'value' => '$this->grid->dataProvider->pagination->currentPage*$this->grid->dataProvider->pagination->pageSize + $row+1'
 			);
 			if(!isset($_GET['collection'])) {
+				$this->defaultColumns[] = array(
+					'name' => 'category_search',
+					'value' => '$data->collection->category->category_name',
+					'filter'=> ArticleCollectionCategory::getCategory(),
+					'type' => 'raw',
+				);
 				$this->defaultColumns[] = array(
 					'name' => 'collection_search',
 					'value' => '$data->collection->article->title',
@@ -307,19 +307,20 @@ class ArticleCollectionSubjects extends CActiveRecord
 	protected function beforeSave() {
 		if(parent::beforeSave()) {
 			if($this->isNewRecord) {
+				$tag_i = Utility::getUrlTitle(strtolower(trim($this->tag_i)));
 				if($this->tag_id == 0) {
 					$subject = OmmuTags::model()->find(array(
 						'select' => 'tag_id, body',
-						'condition' => 'publish = 1 AND body = :body',
+						'condition' => 'body = :body',
 						'params' => array(
-							':body' => $this->tag_input,
+							':body' => $tag_i,
 						),
 					));
-					if($subject != null) {
+					if($subject != null)
 						$this->tag_id = $subject->tag_id;
-					} else {
+					else {
 						$data = new OmmuTags;
-						$data->body = $this->tag_input;
+						$data->body = $this->tag_i;
 						if($data->save()) {
 							$this->tag_id = $data->tag_id;
 						}
