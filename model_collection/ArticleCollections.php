@@ -356,6 +356,10 @@ class ArticleCollections extends CActiveRecord
 				$this->defaultColumns[] = array(
 					'name' => 'publish_year',
 					'value' => '!in_array($data->publish_year, array(\'0000\',\'1970\')) ? $data->publish_year : \'-\'',
+					'htmlOptions' => array(
+						'class' => 'center',
+					),
+					'type' => 'raw',
 				);
 			}
 			if(in_array('publish_location', $gridview_column)) {
