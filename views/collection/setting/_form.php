@@ -88,8 +88,13 @@
 					'publish_location' => $collection->getAttributeLabel('publish_location'),
 					'creation_search' => $collection->getAttributeLabel('creation_search'),
 					'creation_date' => $collection->getAttributeLabel('creation_date'),
+					'published_date_search' => $collection->getAttributeLabel('published_date_search'),
 					'author_search' => $collection->getAttributeLabel('author_search'),
 					'subject_search' => $collection->getAttributeLabel('subject_search'),
+					'media_search' => $collection->getAttributeLabel('media_search'),
+					'view_search' => $collection->getAttributeLabel('view_search'),
+					'like_search' => $collection->getAttributeLabel('like_search'),
+					'downlaod_search' => $collection->getAttributeLabel('downlaod_search'),
 				);
 				if(!$model->getErrors())
 					$model->gridview_column = unserialize($model->gridview_column);

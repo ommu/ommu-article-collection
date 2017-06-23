@@ -47,8 +47,13 @@ class ArticleCollections extends CActiveRecord
 	// Variable Search
 	public $article_search;
 	public $publisher_search;
+	public $published_date_search;
 	public $author_search;
 	public $subject_search;
+	public $media_search;
+	public $view_search;
+	public $like_search;
+	public $downlaod_search;
 	public $creation_search;
 	public $modified_search;
 
@@ -90,7 +95,7 @@ class ArticleCollections extends CActiveRecord
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('collection_id, publish, cat_id, article_id, publisher_id, publish_year, publish_location, isbn, pages, series, creation_date, creation_id, modified_date, modified_id,
-				article_search, publisher_search, author_search, subject_search, creation_search, modified_search', 'safe', 'on'=>'search'),
+				article_search, publisher_search, published_date_search, author_search, subject_search, media_search, view_search, like_search, downlaod_search, creation_search, modified_search', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -137,8 +142,13 @@ class ArticleCollections extends CActiveRecord
 			'subject_i' => Yii::t('attribute', 'Subjects'),
 			'article_search' => Yii::t('attribute', 'Collection'),
 			'publisher_search' => Yii::t('attribute', 'Publisher'),
+			'published_date_search' => Yii::t('attribute', 'Published Date'),
 			'author_search' => Yii::t('attribute', 'Authors'),
 			'subject_search' => Yii::t('attribute', 'Subjects'),
+			'media_search' => Yii::t('attribute', 'Photos'),
+			'view_search' => Yii::t('attribute', 'Views'),
+			'like_search' => Yii::t('attribute', 'Likes'),
+			'downlaod_search' => Yii::t('attribute', 'Downloads'),
 			'creation_search' => Yii::t('attribute', 'Creation'),
 			'modified_search' => Yii::t('attribute', 'Modified'),
 			'title_i' => Yii::t('attribute', 'Title'),
@@ -172,7 +182,7 @@ class ArticleCollections extends CActiveRecord
 			),
 			'article' => array(
 				'alias'=>'article',
-				'select'=>'title',
+				'select'=>'title, published_date',
 			),
 			'article.tags' => array(
 				'alias'=>'tags',
@@ -256,8 +266,14 @@ class ArticleCollections extends CActiveRecord
 		
 		$criteria->compare('article.title',strtolower($this->article_search), true);
 		$criteria->compare('publisher.publisher_name',strtolower($this->publisher_search), true);
+		if($this->published_date_search != null && !in_array($this->published_date_search, array('0000-00-00 00:00:00', '0000-00-00')))
+			$criteria->compare('date(article.published_date)',date('Y-m-d', strtotime($this->published_date_search)));
 		$criteria->compare('view.authors',$this->author_search);
 		$criteria->compare('view.subjects',$this->subject_search);
+		$criteria->compare('article.view.medias',$this->media_search);
+		$criteria->compare('article.view.views',$this->view_search);
+		$criteria->compare('article.view.likes',$this->like_search);
+		$criteria->compare('article.view.downloads',$this->downlaod_search);
 		$criteria->compare('creation.displayname',strtolower($this->creation_search), true);
 		$criteria->compare('modified.displayname',strtolower($this->modified_search), true);
 
@@ -402,6 +418,34 @@ class ArticleCollections extends CActiveRecord
 					), true),
 				);
 			}
+			if(in_array('published_date_search', $gridview_column)) {
+				$this->defaultColumns[] = array(
+					'name' => 'published_date_search',
+					'value' => 'Utility::dateFormat($data->article->published_date)',
+					'htmlOptions' => array(
+						'class' => 'center',
+					),
+					'filter' => Yii::app()->controller->widget('application.components.system.CJuiDatePicker', array(
+						'model'=>$this, 
+						'attribute'=>'published_date_search', 
+						'language' => 'en',
+						'i18nScriptFile' => 'jquery-ui-i18n.min.js',
+						//'mode'=>'datetime',
+						'htmlOptions' => array(
+							'id' => 'published_date_filter',
+						),
+						'options'=>array(
+							'showOn' => 'focus',
+							'dateFormat' => 'dd-mm-yy',
+							'showOtherMonths' => true,
+							'selectOtherMonths' => true,
+							'changeMonth' => true,
+							'changeYear' => true,
+							'showButtonPanel' => true,
+						),
+					), true),
+				);
+			}
 			if(in_array('author_search', $gridview_column)) {
 				$this->defaultColumns[] = array(
 					'name' => 'author_search',
@@ -416,6 +460,46 @@ class ArticleCollections extends CActiveRecord
 				$this->defaultColumns[] = array(
 					'name' => 'subject_search',
 					'value' => 'CHtml::link($data->view->subjects ? $data->view->subjects : 0, Yii::app()->controller->createUrl("collection/subjects/manage",array(\'collection\'=>$data->collection_id,\'plugin\'=>\'collection\')))',
+					'htmlOptions' => array(
+						'class' => 'center',
+					),
+					'type' => 'raw',
+				);
+			}
+			if(in_array('media_search', $gridview_column)) {
+				$this->defaultColumns[] = array(
+					'name' => 'media_search',
+					'value' => 'CHtml::link($data->article->view->medias ? $data->article->view->medias : 0, Yii::app()->controller->createUrl("o/media/manage",array(\'article\'=>$data->article_id)))',
+					'htmlOptions' => array(
+						'class' => 'center',
+					),
+					'type' => 'raw',
+				);
+			}
+			if(in_array('view_search', $gridview_column)) {
+				$this->defaultColumns[] = array(
+					'name' => 'view_search',
+					'value' => 'CHtml::link($data->article->view->views ? $data->article->view->views : 0, Yii::app()->controller->createUrl("o/views/manage",array(\'article\'=>$data->article_id)))',
+					'htmlOptions' => array(
+						'class' => 'center',
+					),
+					'type' => 'raw',
+				);
+			}
+			if(in_array('like_search', $gridview_column)) {
+				$this->defaultColumns[] = array(
+					'name' => 'like_search',
+					'value' => 'CHtml::link($data->article->view->likes ? $data->article->view->likes : 0, Yii::app()->controller->createUrl("o/like/manage",array(\'article\'=>$data->article_id)))',
+					'htmlOptions' => array(
+						'class' => 'center',
+					),
+					'type' => 'raw',
+				);
+			}
+			if(in_array('downlaod_search', $gridview_column)) {
+				$this->defaultColumns[] = array(
+					'name' => 'downlaod_search',
+					'value' => 'CHtml::link($data->article->view->downloads ? $data->article->view->downloads : 0, Yii::app()->controller->createUrl("o/download/manage",array(\'article\'=>$data->article_id)))',
 					'htmlOptions' => array(
 						'class' => 'center',
 					),
