@@ -31,7 +31,7 @@
  *
  * The followings are the available model relations:
  * @property ArticleCollections $collection
- * @property OmmuTags $tag
+ * @property Tags $tag
  */
 class ArticleCollectionSubjects extends CActiveRecord
 {
