@@ -24,7 +24,7 @@
 	$medias = $model->article->medias;
 	$media = $model->article->view->media_cover ? $article->article->view->media_cover : $medias[0]->media;
 	
-	$this->widget('application.components.system.FDetailView', array(
+	$this->widget('application.libraries.core.components.system.FDetailView', array(
 		'data'=>$model,
 		'attributes'=>array(
 			array(
