@@ -23,7 +23,7 @@
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @copyright Copyright (c) 2016 Ommu Platform (opensource.ommu.co)
  * @created date 26 October 2016, 06:58 WIB
- * @link https://github.com/ommu/plu-article-collection
+ * @link https://github.com/ommu/ommu-article-collection
  * @contect (+62)856-299-4114
  *
  *----------------------------------------------------------------------------------------------------------
