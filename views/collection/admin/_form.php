@@ -356,7 +356,7 @@
 			<div class="desc">
 				<?php 
 				//echo $form->textArea($article,'body',array('rows'=>6, 'cols'=>50, 'class'=>'span-10 small'));
-				$this->widget('application.extensions.imperavi.ImperaviRedactorWidget', array(
+				$this->widget('yiiext.imperavi-redactor-widget.ImperaviRedactorWidget', array(
 					'model'=>$article,
 					'attribute'=>body,
 					// Redactor options
