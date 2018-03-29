@@ -40,7 +40,7 @@
 
 	<fieldset class="clearfix">
 		<div class="clear">
-			<div class="left">	
+			<div class="left">
 				<div class="clearfix">
 					<?php echo $form->labelEx($model,'cat_id'); ?>
 					<div class="desc">
@@ -141,7 +141,7 @@
 									<div><?php echo $val->author->author_name;?><a href="<?php echo Yii::app()->controller->createUrl('collection/authors/delete',array('id'=>$val->id,'hook'=>'collection','plugin'=>'collection'));?>" title="<?php echo Yii::t('phrase', 'Delete');?>"><?php echo Yii::t('phrase', 'Delete');?></a></div>
 								<?php }
 								}
-							}?>				
+							}?>
 						</div>
 						<?php if($model->isNewRecord) {?><span class="small-px">tambahkan tanda pagar (#) jika ingin menambahkan aothor lebih dari satu</span><?php }?>
 					</div>
@@ -244,14 +244,14 @@
 									<div><?php echo $val->tag->body;?><a href="<?php echo Yii::app()->controller->createUrl('collection/subjects/delete',array('id'=>$val->id,'hook'=>'collection','plugin'=>'collection'));?>" title="<?php echo Yii::t('phrase', 'Delete');?>"><?php echo Yii::t('phrase', 'Delete');?></a></div>
 								<?php }
 								}
-							}?>						
+							}?>
 						</div>
 						<?php if($model->isNewRecord) {?><span class="small-px">tambahkan tanda koma (,) jika ingin menambahkan subject lebih dari satu</span><?php }?>
 					</div>
 				</div>
 			</div>
 			
-			<div class="right">				
+			<div class="right">
 				<div class="clearfix">
 					<?php echo $form->labelEx($article,'media_input'); ?>
 					<div class="desc">
