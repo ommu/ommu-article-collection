@@ -221,13 +221,16 @@ class ArticleCollectionSetting extends CActiveRecord
 	{
 		if($column != null) {
 			$model = self::model()->findByPk(1,array(
-				'select' => $column
+				'select' => $column,
 			));
-			return $model->$column;
+			if(count(explode(',', $column)) == 1)
+				return $model->$column;
+			else
+				return $model;
 			
 		} else {
 			$model = self::model()->findByPk(1);
-			return $model;			
+			return $model;
 		}
 	}
 
