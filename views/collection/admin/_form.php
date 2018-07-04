@@ -7,7 +7,7 @@
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @contact (+62)856-299-4114
- * @copyright Copyright (c) 2016 Ommu Platform (opensource.ommu.co)
+ * @copyright Copyright (c) 2016 Ommu Platform (www.ommu.co)
  * @created date 26 October 2016, 06:58 WIB
  * @link https://github.com/ommu/ommu-article-collection
  *
@@ -58,7 +58,7 @@
 				<div class="clearfix">
 					<label><?php echo $article->getAttributeLabel('title');?> <span class="required">*</span></label>
 					<div class="desc">
-						<?php echo $form->textField($article,'title',array('maxlength'=>128,'class'=>'span-8')); ?>
+						<?php echo $form->textField($article,'title', array('maxlength'=>128,'class'=>'span-8')); ?>
 						<?php echo $form->error($article,'title'); ?>
 					</div>
 				</div>
@@ -67,7 +67,7 @@
 					<?php echo $form->labelEx($publisher,'publisher_name'); ?>
 					<div class="desc">
 						<?php 
-						//echo $form->textField($publisher,'publisher_name',array('maxlength'=>64,'class'=>'span-7'));
+						//echo $form->textField($publisher,'publisher_name', array('maxlength'=>64,'class'=>'span-7'));
 						$this->widget('zii.widgets.jui.CJuiAutoComplete', array(
 							'model' => $publisher,
 							'attribute' => 'publisher_name',
@@ -97,10 +97,10 @@
 					<div class="desc">
 						<?php 
 						if($model->isNewRecord) {
-							echo $form->textArea($model,'author_i',array('rows'=>6, 'cols'=>50, 'class'=>'span-10 smaller'));
+							echo $form->textArea($model,'author_i', array('rows'=>6, 'cols'=>50, 'class'=>'span-10 smaller'));
 							
 						} else {
-							//echo $form->textField($model,'author_i',array('maxlength'=>32,'class'=>'span-6'));
+							//echo $form->textField($model,'author_i', array('maxlength'=>32,'class'=>'span-6'));
 							$url = Yii::app()->controller->createUrl('collection/authors/add', array('hook'=>'collection','plugin'=>'collection'));
 							$collection = $model->collection_id;
 							$authorId = 'ArticleCollections_author_i';
@@ -138,7 +138,7 @@
 								$authors = $model->authors;
 								if(!empty($authors)) {
 									foreach($authors as $key => $val) {?>
-									<div><?php echo $val->author->author_name;?><a href="<?php echo Yii::app()->controller->createUrl('collection/authors/delete',array('id'=>$val->id,'hook'=>'collection','plugin'=>'collection'));?>" title="<?php echo Yii::t('phrase', 'Delete');?>"><?php echo Yii::t('phrase', 'Delete');?></a></div>
+									<div><?php echo $val->author->author_name;?><a href="<?php echo Yii::app()->controller->createUrl('collection/authors/delete', array('id'=>$val->id,'hook'=>'collection','plugin'=>'collection'));?>" title="<?php echo Yii::t('phrase', 'Delete');?>"><?php echo Yii::t('phrase', 'Delete');?></a></div>
 								<?php }
 								}
 							}?>
@@ -153,7 +153,7 @@
 						<?php 
 						if(!$model->getErrors())
 							$model->publish_year = !$model->isNewRecord ? (!in_array($model->publish_year, array('0000','1970')) ? $model->publish_year : '') : '';
-						echo $form->textField($model,'publish_year',array('maxlength'=>4, 'class'=>'span-3')); ?>
+						echo $form->textField($model,'publish_year', array('maxlength'=>4, 'class'=>'span-3')); ?>
 						<?php echo $form->error($model,'publish_year'); ?>
 						<?php /*<div class="small-px silent"></div>*/?>
 					</div>
@@ -162,7 +162,7 @@
 				<div class="clearfix">
 					<?php echo $form->labelEx($model,'publish_location'); ?>
 					<div class="desc">
-						<?php echo $form->textField($model,'publish_location',array('maxlength'=>64, 'class'=>'span-5')); ?>
+						<?php echo $form->textField($model,'publish_location', array('maxlength'=>64, 'class'=>'span-5')); ?>
 						<?php echo $form->error($model,'publish_location'); ?>
 						<?php /*<div class="small-px silent"></div>*/?>
 					</div>
@@ -171,7 +171,7 @@
 				<div class="clearfix">
 					<?php echo $form->labelEx($model,'isbn'); ?>
 					<div class="desc">
-						<?php echo $form->textField($model,'isbn',array('maxlength'=>32, 'class'=>'span-5')); ?>
+						<?php echo $form->textField($model,'isbn', array('maxlength'=>32, 'class'=>'span-5')); ?>
 						<?php echo $form->error($model,'isbn'); ?>
 						<?php /*<div class="small-px silent"></div>*/?>
 					</div>
@@ -180,7 +180,7 @@
 				<div class="clearfix">
 					<?php echo $form->labelEx($model,'pages'); ?>
 					<div class="desc">
-						<?php echo $form->textField($model,'pages',array('rows'=>6, 'cols'=>50, 'class'=>'span-5')); ?>
+						<?php echo $form->textField($model,'pages', array('rows'=>6, 'cols'=>50, 'class'=>'span-5')); ?>
 						<?php echo $form->error($model,'pages'); ?>
 						<?php /*<div class="small-px silent"></div>*/?>
 					</div>
@@ -189,7 +189,7 @@
 				<div class="clearfix">
 					<?php echo $form->labelEx($model,'series'); ?>
 					<div class="desc">
-						<?php echo $form->textField($model,'series',array('rows'=>6, 'cols'=>50, 'class'=>'span-5')); ?>
+						<?php echo $form->textField($model,'series', array('rows'=>6, 'cols'=>50, 'class'=>'span-5')); ?>
 						<?php echo $form->error($model,'series'); ?>
 						<?php /*<div class="small-px silent"></div>*/?>
 					</div>
@@ -200,10 +200,10 @@
 					<div class="desc">
 						<?php 
 						if($model->isNewRecord) {
-							echo $form->textArea($model,'subject_i',array('rows'=>6, 'cols'=>50, 'class'=>'span-10 smaller'));
+							echo $form->textArea($model,'subject_i', array('rows'=>6, 'cols'=>50, 'class'=>'span-10 smaller'));
 							
 						} else {
-							//echo $form->textField($model,'subject_i',array('maxlength'=>32,'class'=>'span-6'));
+							//echo $form->textField($model,'subject_i', array('maxlength'=>32,'class'=>'span-6'));
 							$url = Yii::app()->controller->createUrl('collection/subjects/add', array('hook'=>'collection'));
 							$collection = $model->collection_id;
 							$subjectId = 'ArticleCollections_subject_i';
@@ -241,7 +241,7 @@
 								$subjects = $model->subjects;
 								if(!empty($subjects)) {
 									foreach($subjects as $key => $val) {?>
-									<div><?php echo $val->tag->body;?><a href="<?php echo Yii::app()->controller->createUrl('collection/subjects/delete',array('id'=>$val->id,'hook'=>'collection','plugin'=>'collection'));?>" title="<?php echo Yii::t('phrase', 'Delete');?>"><?php echo Yii::t('phrase', 'Delete');?></a></div>
+									<div><?php echo $val->tag->body;?><a href="<?php echo Yii::app()->controller->createUrl('collection/subjects/delete', array('id'=>$val->id,'hook'=>'collection','plugin'=>'collection'));?>" title="<?php echo Yii::t('phrase', 'Delete');?>"><?php echo Yii::t('phrase', 'Delete');?></a></div>
 								<?php }
 								}
 							}?>
@@ -298,12 +298,12 @@
 						<?php 
 						$article->published_date = $article->isNewRecord && $article->published_date == '' ? date('d-m-Y') : date('d-m-Y', strtotime($article->published_date));
 						//echo $form->textField($article,'published_date', array('class'=>'span-7'));
-						$this->widget('application.libraries.core.components.system.CJuiDatePicker',array(
+						$this->widget('application.libraries.core.components.system.CJuiDatePicker', array(
 							'model'=>$article, 
 							'attribute'=>'published_date',
 							//'mode'=>'datetime',
 							'options'=>array(
-								'dateFormat' => 'dd-mm-yy',
+								'dateFormat' => 'yy-mm-dd',
 							),
 							'htmlOptions'=>array(
 								'class' => 'span-7',
@@ -354,7 +354,7 @@
 			<?php echo $form->labelEx($article,'body'); ?>
 			<div class="desc">
 				<?php 
-				//echo $form->textArea($article,'body',array('rows'=>6, 'cols'=>50, 'class'=>'span-10 small'));
+				//echo $form->textArea($article,'body', array('rows'=>6, 'cols'=>50, 'class'=>'span-10 small'));
 				$this->widget('yiiext.imperavi-redactor-widget.ImperaviRedactorWidget', array(
 					'model'=>$article,
 					'attribute'=>body,

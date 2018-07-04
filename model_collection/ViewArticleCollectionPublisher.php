@@ -4,7 +4,7 @@
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @contact (+62)856-299-4114
- * @copyright Copyright (c) 2016 Ommu Platform (opensource.ommu.co)
+ * @copyright Copyright (c) 2016 Ommu Platform (www.ommu.co)
  * @created date 1 December 2016, 06:18 WIB
  * @link https://github.com/ommu/ommu-article-collection
  *
@@ -115,11 +115,11 @@ class ViewArticleCollectionPublisher extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('t.publisher_id',$this->publisher_id);
-		$criteria->compare('t.collections',$this->collections);
-		$criteria->compare('t.collection_all',$this->collection_all);
+		$criteria->compare('t.publisher_id', $this->publisher_id);
+		$criteria->compare('t.collections', $this->collections);
+		$criteria->compare('t.collection_all', $this->collection_all);
 
-		if(!isset($_GET['ViewArticleCollectionPublisher_sort']))
+		if(!Yii::app()->getRequest()->getParam('ViewArticleCollectionPublisher_sort'))
 			$criteria->order = 't.publisher_id DESC';
 
 		return new CActiveDataProvider($this, array(
@@ -178,7 +178,7 @@ class ViewArticleCollectionPublisher extends CActiveRecord
 	public static function getInfo($id, $column=null)
 	{
 		if($column != null) {
-			$model = self::model()->findByPk($id,array(
+			$model = self::model()->findByPk($id, array(
 				'select' => $column,
 			));
 			if(count(explode(',', $column)) == 1)

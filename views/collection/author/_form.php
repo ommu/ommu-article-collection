@@ -7,7 +7,7 @@
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @contact (+62)856-299-4114
- * @copyright Copyright (c) 2016 Ommu Platform (opensource.ommu.co)
+ * @copyright Copyright (c) 2016 Ommu Platform (www.ommu.co)
  * @created date 20 October 2016, 10:12 WIB
  * @link https://github.com/ommu/ommu-article-collection
  *
@@ -32,7 +32,7 @@
 		<div class="clearfix">
 			<?php echo $form->labelEx($model,'author_name'); ?>
 			<div class="desc">
-				<?php echo $form->textField($model,'author_name',array('rows'=>6, 'cols'=>50)); ?>
+				<?php echo $form->textField($model,'author_name', array('rows'=>6, 'cols'=>50)); ?>
 				<?php echo $form->error($model,'author_name'); ?>
 				<?php /*<div class="small-px silent"></div>*/?>
 			</div>
@@ -51,7 +51,7 @@
 	</fieldset>
 </div>
 <div class="dialog-submit">
-	<?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('phrase', 'Create') : Yii::t('phrase', 'Save') ,array('onclick' => 'setEnableSave()')); ?>
+	<?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('phrase', 'Create') : Yii::t('phrase', 'Save') , array('onclick' => 'setEnableSave()')); ?>
 	<?php echo CHtml::button(Yii::t('phrase', 'Cancel'), array('id'=>'closed')); ?>
 </div>
 <?php $this->endWidget(); ?>

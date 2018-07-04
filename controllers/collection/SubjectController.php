@@ -16,7 +16,7 @@
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @contact (+62)856-299-4114
- * @copyright Copyright (c) 2017 Ommu Platform (opensource.ommu.co)
+ * @copyright Copyright (c) 2017 Ommu Platform (www.ommu.co)
  * @created date 19 June 2017, 16:49 WIB
  * @link https://github.com/ommu/ommu-article-collection
  *
@@ -123,7 +123,7 @@ class SubjectController extends Controller
 		$this->pageTitle = Yii::t('phrase', 'Subjects');
 		$this->pageDescription = '';
 		$this->pageMeta = '';
-		$this->render('admin_manage',array(
+		$this->render('admin_manage', array(
 			'model'=>$model,
 			'columns' => $columns,
 		));
@@ -144,7 +144,7 @@ class SubjectController extends Controller
 		$this->pageTitle = Yii::t('phrase', 'View Subject: $subject_name', array('$subject_name'=>$model->tag->body));
 		$this->pageDescription = '';
 		$this->pageMeta =  '';
-		$this->render('admin_view',array(
+		$this->render('admin_view', array(
 			'model'=>$model,
 		));
 	}	

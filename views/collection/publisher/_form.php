@@ -7,7 +7,7 @@
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @contact (+62)856-299-4114
- * @copyright Copyright (c) 2016 Ommu Platform (opensource.ommu.co)
+ * @copyright Copyright (c) 2016 Ommu Platform (www.ommu.co)
  * @created date 20 October 2016, 10:13 WIB
  * @link https://github.com/ommu/ommu-article-collection
  *
@@ -31,7 +31,7 @@
 		<div class="clearfix">
 			<?php echo $form->labelEx($model,'publisher_name'); ?>
 			<div class="desc">
-				<?php echo $form->textField($model,'publisher_name',array('rows'=>6, 'cols'=>50)); ?>
+				<?php echo $form->textField($model,'publisher_name', array('rows'=>6, 'cols'=>50)); ?>
 				<?php echo $form->error($model,'publisher_name'); ?>
 				<?php /*<div class="small-px silent"></div>*/?>
 			</div>
@@ -40,7 +40,7 @@
 		<div class="clearfix">
 			<?php echo $form->labelEx($model,'publisher_location'); ?>
 			<div class="desc">
-				<?php echo $form->textField($model,'publisher_location',array('rows'=>6, 'cols'=>50)); ?>
+				<?php echo $form->textField($model,'publisher_location', array('rows'=>6, 'cols'=>50)); ?>
 				<?php echo $form->error($model,'publisher_location'); ?>
 				<?php /*<div class="small-px silent"></div>*/?>
 			</div>
@@ -49,7 +49,7 @@
 		<div class="clearfix">
 			<?php echo $form->labelEx($model,'publisher_address'); ?>
 			<div class="desc">
-				<?php echo $form->textArea($model,'publisher_address',array('rows'=>6, 'cols'=>50, 'class'=>'span-10 smaller')); ?>
+				<?php echo $form->textArea($model,'publisher_address', array('rows'=>6, 'cols'=>50, 'class'=>'span-10 smaller')); ?>
 				<?php echo $form->error($model,'publisher_address'); ?>
 				<?php /*<div class="small-px silent"></div>*/?>
 			</div>
@@ -68,7 +68,7 @@
 	</fieldset>
 </div>
 <div class="dialog-submit">
-	<?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('phrase', 'Create') : Yii::t('phrase', 'Save') ,array('onclick' => 'setEnableSave()')); ?>
+	<?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('phrase', 'Create') : Yii::t('phrase', 'Save') , array('onclick' => 'setEnableSave()')); ?>
 	<?php echo CHtml::button(Yii::t('phrase', 'Cancel'), array('id'=>'closed')); ?>
 </div>
 <?php $this->endWidget(); ?>

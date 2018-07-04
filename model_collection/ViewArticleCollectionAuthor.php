@@ -4,7 +4,7 @@
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @contact (+62)856-299-4114
- * @copyright Copyright (c) 2016 Ommu Platform (opensource.ommu.co)
+ * @copyright Copyright (c) 2016 Ommu Platform (www.ommu.co)
  * @created date 1 December 2016, 06:17 WIB
  * @link https://github.com/ommu/ommu-article-collection
  *
@@ -115,11 +115,11 @@ class ViewArticleCollectionAuthor extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('t.author_id',strtolower($this->author_id),true);
-		$criteria->compare('t.collections',strtolower($this->collections),true);
-		$criteria->compare('t.collection_all',strtolower($this->collection_all),true);
+		$criteria->compare('t.author_id', strtolower($this->author_id), true);
+		$criteria->compare('t.collections', strtolower($this->collections), true);
+		$criteria->compare('t.collection_all', strtolower($this->collection_all), true);
 
-		if(!isset($_GET['ViewArticleCollectionAuthor_sort']))
+		if(!Yii::app()->getRequest()->getParam('ViewArticleCollectionAuthor_sort'))
 			$criteria->order = 't.author_id DESC';
 
 		return new CActiveDataProvider($this, array(
@@ -178,7 +178,7 @@ class ViewArticleCollectionAuthor extends CActiveRecord
 	public static function getInfo($id, $column=null)
 	{
 		if($column != null) {
-			$model = self::model()->findByPk($id,array(
+			$model = self::model()->findByPk($id, array(
 				'select' => $column,
 			));
 			if(count(explode(',', $column)) == 1)

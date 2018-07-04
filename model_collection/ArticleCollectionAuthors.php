@@ -4,7 +4,7 @@
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @contact (+62)856-299-4114
- * @copyright Copyright (c) 2016 Ommu Platform (opensource.ommu.co)
+ * @copyright Copyright (c) 2016 Ommu Platform (www.ommu.co)
  * @created date 20 October 2016, 10:09 WIB
  * @link https://github.com/ommu/ommu-article-collection
  *
@@ -151,28 +151,28 @@ class ArticleCollectionAuthors extends CActiveRecord
 			),
 		);
 
-		$criteria->compare('t.id',strtolower($this->id),true);
-		if(isset($_GET['collection']))
-			$criteria->compare('t.collection_id',$_GET['collection']);
+		$criteria->compare('t.id', strtolower($this->id), true);
+		if(Yii::app()->getRequest()->getParam('collection'))
+			$criteria->compare('t.collection_id', Yii::app()->getRequest()->getParam('collection'));
 		else
-			$criteria->compare('t.collection_id',$this->collection_id);
-		if(isset($_GET['author']))
-			$criteria->compare('t.author_id',$_GET['author']);
+			$criteria->compare('t.collection_id', $this->collection_id);
+		if(Yii::app()->getRequest()->getParam('author'))
+			$criteria->compare('t.author_id', Yii::app()->getRequest()->getParam('author'));
 		else
-			$criteria->compare('t.author_id',$this->author_id);
-		if($this->creation_date != null && !in_array($this->creation_date, array('0000-00-00 00:00:00', '0000-00-00')))
-			$criteria->compare('date(t.creation_date)',date('Y-m-d', strtotime($this->creation_date)));
-		if(isset($_GET['creation']))
-			$criteria->compare('t.creation_id',$_GET['creation']);
+			$criteria->compare('t.author_id', $this->author_id);
+		if($this->creation_date != null && !in_array($this->creation_date, array('0000-00-00 00:00:00','1970-01-01 00:00:00','0002-12-02 07:07:12','-0001-11-30 00:00:00')))
+			$criteria->compare('date(t.creation_date)', date('Y-m-d', strtotime($this->creation_date)));
+		if(Yii::app()->getRequest()->getParam('creation'))
+			$criteria->compare('t.creation_id', Yii::app()->getRequest()->getParam('creation'));
 		else
-			$criteria->compare('t.creation_id',$this->creation_id);
+			$criteria->compare('t.creation_id', $this->creation_id);
 		
-		$criteria->compare('collection.cat_id',$this->category_search);
-		$criteria->compare('collection_article.title',strtolower($this->collection_search), true);
-		$criteria->compare('author.author_name',strtolower($this->author_search), true);
-		$criteria->compare('creation.displayname',strtolower($this->creation_search), true);
+		$criteria->compare('collection.cat_id', $this->category_search);
+		$criteria->compare('collection_article.title', strtolower($this->collection_search), true);
+		$criteria->compare('author.author_name', strtolower($this->author_search), true);
+		$criteria->compare('creation.displayname', strtolower($this->creation_search), true);
 
-		if(!isset($_GET['ArticleCollectionAuthors_sort']))
+		if(!Yii::app()->getRequest()->getParam('ArticleCollectionAuthors_sort'))
 			$criteria->order = 't.id DESC';
 
 		return new CActiveDataProvider($this, array(
@@ -220,7 +220,7 @@ class ArticleCollectionAuthors extends CActiveRecord
 				'header' => 'No',
 				'value' => '$this->grid->dataProvider->pagination->currentPage*$this->grid->dataProvider->pagination->pageSize + $row+1'
 			);
-			if(!isset($_GET['collection'])) {
+			if(!Yii::app()->getRequest()->getParam('collection')) {
 				$this->defaultColumns[] = array(
 					'name' => 'category_search',
 					'value' => '$data->collection->category->category_name',
@@ -232,7 +232,7 @@ class ArticleCollectionAuthors extends CActiveRecord
 					'value' => '$data->collection->article->title',
 				);
 			}
-			if(!isset($_GET['author'])) {
+			if(!Yii::app()->getRequest()->getParam('author')) {
 				$this->defaultColumns[] = array(
 					'name' => 'author_search',
 					'value' => '$data->author->author_name',
@@ -259,7 +259,7 @@ class ArticleCollectionAuthors extends CActiveRecord
 					),
 					'options'=>array(
 						'showOn' => 'focus',
-						'dateFormat' => 'dd-mm-yy',
+						'dateFormat' => 'yy-mm-dd',
 						'showOtherMonths' => true,
 						'selectOtherMonths' => true,
 						'changeMonth' => true,
@@ -278,7 +278,7 @@ class ArticleCollectionAuthors extends CActiveRecord
 	public static function getInfo($id, $column=null)
 	{
 		if($column != null) {
-			$model = self::model()->findByPk($id,array(
+			$model = self::model()->findByPk($id, array(
 				'select' => $column,
 			));
 			if(count(explode(',', $column)) == 1)

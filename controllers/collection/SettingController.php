@@ -16,7 +16,7 @@
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @contact (+62)856-299-4114
- * @copyright Copyright (c) 2016 Ommu Platform (opensource.ommu.co)
+ * @copyright Copyright (c) 2016 Ommu Platform (www.ommu.co)
  * @created date 26 October 2016, 06:58 WIB
  * @link https://github.com/ommu/ommu-article-collection
  *
@@ -142,7 +142,7 @@ class SettingController extends Controller
 				echo $encode;
 
 			} else {
-				if(isset($_GET['enablesave']) && $_GET['enablesave'] == 1) {
+				if(Yii::app()->getRequest()->getParam('enablesave') == 1) {
 					if($model->save()) {
 						echo CJSON::encode(array(
 							'type' => 0,
@@ -159,7 +159,7 @@ class SettingController extends Controller
 		$this->pageTitle = Yii::t('phrase', 'Update Article Collection Settings');
 		$this->pageDescription = '';
 		$this->pageMeta = '';
-		$this->render('admin_edit',array(
+		$this->render('admin_edit', array(
 			'model'=>$model,
 			'collection'=>$collection,
 		));

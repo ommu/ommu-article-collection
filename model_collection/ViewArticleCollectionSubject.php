@@ -4,7 +4,7 @@
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @contact (+62)856-299-4114
- * @copyright Copyright (c) 2016 Ommu Platform (opensource.ommu.co)
+ * @copyright Copyright (c) 2016 Ommu Platform (www.ommu.co)
  * @created date 1 December 2016, 06:18 WIB
  * @link https://github.com/ommu/ommu-article-collection
  *
@@ -134,17 +134,17 @@ class ViewArticleCollectionSubject extends CActiveRecord
 			),
 		);
 
-		$criteria->compare('t.tag_id',$this->tag_id);
-		$criteria->compare('t.collections',$this->collections);
-		$criteria->compare('t.collection_all',$this->collection_all);
-		if($this->creation_date != null && !in_array($this->creation_date, array('0000-00-00 00:00:00', '0000-00-00')))
-			$criteria->compare('date(t.creation_date)',date('Y-m-d', strtotime($this->creation_date)));
-		if($this->modified_date != null && !in_array($this->modified_date, array('0000-00-00 00:00:00', '0000-00-00')))
-			$criteria->compare('date(t.modified_date)',date('Y-m-d', strtotime($this->modified_date)));
+		$criteria->compare('t.tag_id', $this->tag_id);
+		$criteria->compare('t.collections', $this->collections);
+		$criteria->compare('t.collection_all', $this->collection_all);
+		if($this->creation_date != null && !in_array($this->creation_date, array('0000-00-00 00:00:00','1970-01-01 00:00:00','0002-12-02 07:07:12','-0001-11-30 00:00:00')))
+			$criteria->compare('date(t.creation_date)', date('Y-m-d', strtotime($this->creation_date)));
+		if($this->modified_date != null && !in_array($this->modified_date, array('0000-00-00 00:00:00','1970-01-01 00:00:00','0002-12-02 07:07:12','-0001-11-30 00:00:00')))
+			$criteria->compare('date(t.modified_date)', date('Y-m-d', strtotime($this->modified_date)));
 		
-		$criteria->compare('tag.body',strtolower($this->tag_search), true);
+		$criteria->compare('tag.body', strtolower($this->tag_search), true);
 
-		if(!isset($_GET['ViewArticleCollectionSubject_sort']))
+		if(!Yii::app()->getRequest()->getParam('ViewArticleCollectionSubject_sort'))
 			$criteria->order = 't.tag_id DESC';
 
 		return new CActiveDataProvider($this, array(
@@ -213,7 +213,7 @@ class ViewArticleCollectionSubject extends CActiveRecord
 					),
 					'options'=>array(
 						'showOn' => 'focus',
-						'dateFormat' => 'dd-mm-yy',
+						'dateFormat' => 'yy-mm-dd',
 						'showOtherMonths' => true,
 						'selectOtherMonths' => true,
 						'changeMonth' => true,
@@ -239,7 +239,7 @@ class ViewArticleCollectionSubject extends CActiveRecord
 					),
 					'options'=>array(
 						'showOn' => 'focus',
-						'dateFormat' => 'dd-mm-yy',
+						'dateFormat' => 'yy-mm-dd',
 						'showOtherMonths' => true,
 						'selectOtherMonths' => true,
 						'changeMonth' => true,
@@ -250,7 +250,7 @@ class ViewArticleCollectionSubject extends CActiveRecord
 			);
 			$this->defaultColumns[] = array(
 				'name' => 'collections',
-				'value' => 'CHtml::link($data->collections ? $data->collections : 0, Yii::app()->controller->createUrl("collection/subjects/manage",array(\'tag\'=>$data->tag_id,\'plugin\'=>\'collection\')))',
+				'value' => 'CHtml::link($data->collections ? $data->collections : 0, Yii::app()->controller->createUrl("collection/subjects/manage", array(\'tag\'=>$data->tag_id,\'plugin\'=>\'collection\')))',
 				'htmlOptions' => array(
 					'class' => 'center',
 				),
@@ -266,7 +266,7 @@ class ViewArticleCollectionSubject extends CActiveRecord
 	public static function getInfo($id, $column=null)
 	{
 		if($column != null) {
-			$model = self::model()->findByPk($id,array(
+			$model = self::model()->findByPk($id, array(
 				'select' => $column,
 			));
 			if(count(explode(',', $column)) == 1)

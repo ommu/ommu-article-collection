@@ -4,7 +4,7 @@
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @contact (+62)856-299-4114
- * @copyright Copyright (c) 2016 Ommu Platform (opensource.ommu.co)
+ * @copyright Copyright (c) 2016 Ommu Platform (www.ommu.co)
  * @created date 26 October 2016, 06:57 WIB
  * @link https://github.com/ommu/ommu-article-collection
  *
@@ -202,46 +202,46 @@ class ArticleCollections extends CActiveRecord
 			),
 		);
 
-		$criteria->compare('t.collection_id',strtolower($this->collection_id),true);
-		if(isset($_GET['type']) && $_GET['type'] == 'publish')
-			$criteria->compare('t.publish',1);
-		elseif(isset($_GET['type']) && $_GET['type'] == 'unpublish')
-			$criteria->compare('t.publish',0);
-		elseif(isset($_GET['type']) && $_GET['type'] == 'trash')
-			$criteria->compare('t.publish',2);
+		$criteria->compare('t.collection_id', strtolower($this->collection_id), true);
+		if(Yii::app()->getRequest()->getParam('type') == 'publish')
+			$criteria->compare('t.publish', 1);
+		elseif(Yii::app()->getRequest()->getParam('type') == 'unpublish')
+			$criteria->compare('t.publish', 0);
+		elseif(Yii::app()->getRequest()->getParam('type') == 'trash')
+			$criteria->compare('t.publish', 2);
 		else {
-			$criteria->addInCondition('t.publish',array(0,1));
-			$criteria->compare('t.publish',$this->publish);
+			$criteria->addInCondition('t.publish', array(0,1));
+			$criteria->compare('t.publish', $this->publish);
 		}
-		if(isset($_GET['category']))
-			$criteria->compare('t.cat_id',$_GET['category']);
+		if(Yii::app()->getRequest()->getParam('category'))
+			$criteria->compare('t.cat_id', Yii::app()->getRequest()->getParam('category'));
 		else
-			$criteria->compare('t.cat_id',$this->cat_id);
-		if(isset($_GET['article']))
-			$criteria->compare('t.article_id',$_GET['article']);
+			$criteria->compare('t.cat_id', $this->cat_id);
+		if(Yii::app()->getRequest()->getParam('article'))
+			$criteria->compare('t.article_id', Yii::app()->getRequest()->getParam('article'));
 		else
-			$criteria->compare('t.article_id',$this->article_id);
-		if(isset($_GET['publisher']))
-			$criteria->compare('t.publisher_id',$_GET['publisher']);
+			$criteria->compare('t.article_id', $this->article_id);
+		if(Yii::app()->getRequest()->getParam('publisher'))
+			$criteria->compare('t.publisher_id', Yii::app()->getRequest()->getParam('publisher'));
 		else
-			$criteria->compare('t.publisher_id',$this->publisher_id);
-		$criteria->compare('t.publish_year',strtolower($this->publish_year),true);
-		$criteria->compare('t.publish_location',strtolower($this->publish_location),true);
-		$criteria->compare('t.isbn',strtolower($this->isbn),true);
-		$criteria->compare('t.pages',strtolower($this->pages),true);
-		$criteria->compare('t.series',strtolower($this->series),true);
-		if($this->creation_date != null && !in_array($this->creation_date, array('0000-00-00 00:00:00', '0000-00-00')))
-			$criteria->compare('date(t.creation_date)',date('Y-m-d', strtotime($this->creation_date)));
-		if(isset($_GET['creation']))
-			$criteria->compare('t.creation_id',$_GET['creation']);
+			$criteria->compare('t.publisher_id', $this->publisher_id);
+		$criteria->compare('t.publish_year', strtolower($this->publish_year), true);
+		$criteria->compare('t.publish_location', strtolower($this->publish_location), true);
+		$criteria->compare('t.isbn', strtolower($this->isbn), true);
+		$criteria->compare('t.pages', strtolower($this->pages), true);
+		$criteria->compare('t.series', strtolower($this->series), true);
+		if($this->creation_date != null && !in_array($this->creation_date, array('0000-00-00 00:00:00','1970-01-01 00:00:00','0002-12-02 07:07:12','-0001-11-30 00:00:00')))
+			$criteria->compare('date(t.creation_date)', date('Y-m-d', strtotime($this->creation_date)));
+		if(Yii::app()->getRequest()->getParam('creation'))
+			$criteria->compare('t.creation_id', Yii::app()->getRequest()->getParam('creation'));
 		else
-			$criteria->compare('t.creation_id',$this->creation_id);
-		if($this->modified_date != null && !in_array($this->modified_date, array('0000-00-00 00:00:00', '0000-00-00')))
-			$criteria->compare('date(t.modified_date)',date('Y-m-d', strtotime($this->modified_date)));
-		if(isset($_GET['modified']))
-			$criteria->compare('t.modified_id',$_GET['modified']);
+			$criteria->compare('t.creation_id', $this->creation_id);
+		if($this->modified_date != null && !in_array($this->modified_date, array('0000-00-00 00:00:00','1970-01-01 00:00:00','0002-12-02 07:07:12','-0001-11-30 00:00:00')))
+			$criteria->compare('date(t.modified_date)', date('Y-m-d', strtotime($this->modified_date)));
+		if(Yii::app()->getRequest()->getParam('modified'))
+			$criteria->compare('t.modified_id', Yii::app()->getRequest()->getParam('modified'));
 		else
-			$criteria->compare('t.modified_id',$this->modified_id);
+			$criteria->compare('t.modified_id', $this->modified_id);
 		
 		if(Yii::app()->user->level == 2) {
 			$location = ArticleLocationUser::model()->find(array(
@@ -263,20 +263,20 @@ class ArticleCollections extends CActiveRecord
 				$criteria->compare('article.creation_id',Yii::app()->user->id);
 		}
 		
-		$criteria->compare('article.title',strtolower($this->article_search), true);
-		$criteria->compare('publisher.publisher_name',strtolower($this->publisher_search), true);
-		if($this->published_date_search != null && !in_array($this->published_date_search, array('0000-00-00 00:00:00', '0000-00-00')))
-			$criteria->compare('date(article.published_date)',date('Y-m-d', strtotime($this->published_date_search)));
-		$criteria->compare('view.authors',$this->author_search);
-		$criteria->compare('view.subjects',$this->subject_search);
-		$criteria->compare('article.view.medias',$this->media_search);
-		$criteria->compare('article.view.views',$this->view_search);
-		$criteria->compare('article.view.likes',$this->like_search);
-		$criteria->compare('article.view.downloads',$this->downlaod_search);
-		$criteria->compare('creation.displayname',strtolower($this->creation_search), true);
-		$criteria->compare('modified.displayname',strtolower($this->modified_search), true);
+		$criteria->compare('article.title', strtolower($this->article_search), true);
+		$criteria->compare('publisher.publisher_name', strtolower($this->publisher_search), true);
+		if($this->published_date_search != null && !in_array($this->published_date_search, array('0000-00-00 00:00:00','1970-01-01 00:00:00','0002-12-02 07:07:12','-0001-11-30 00:00:00')))
+			$criteria->compare('date(article.published_date)', date('Y-m-d', strtotime($this->published_date_search)));
+		$criteria->compare('view.authors', $this->author_search);
+		$criteria->compare('view.subjects', $this->subject_search);
+		$criteria->compare('article.view.medias', $this->media_search);
+		$criteria->compare('article.view.views', $this->view_search);
+		$criteria->compare('article.view.likes', $this->like_search);
+		$criteria->compare('article.view.downloads', $this->downlaod_search);
+		$criteria->compare('creation.displayname', strtolower($this->creation_search), true);
+		$criteria->compare('modified.displayname', strtolower($this->modified_search), true);
 
-		if(!isset($_GET['ArticleCollections_sort']))
+		if(!Yii::app()->getRequest()->getParam('ArticleCollections_sort'))
 			$criteria->order = 't.collection_id DESC';
 
 		return new CActiveDataProvider($this, array(
@@ -349,7 +349,7 @@ class ArticleCollections extends CActiveRecord
 				'header' => 'No',
 				'value' => '$this->grid->dataProvider->pagination->currentPage*$this->grid->dataProvider->pagination->pageSize + $row+1'
 			);
-			if(!isset($_GET['category'])) {
+			if(!Yii::app()->getRequest()->getParam('category')) {
 				$this->defaultColumns[] = array(
 					'name' => 'cat_id',
 					'value' => '$data->category->category_name',
@@ -361,7 +361,7 @@ class ArticleCollections extends CActiveRecord
 				'name' => 'article_search',
 				'value' => '$data->article->title',
 			);
-			if(!isset($_GET['publisher'])) {
+			if(!Yii::app()->getRequest()->getParam('publisher')) {
 				$this->defaultColumns[] = array(
 					'name' => 'publisher_search',
 					'value' => '$data->publisher->publisher_name',
@@ -407,7 +407,7 @@ class ArticleCollections extends CActiveRecord
 						),
 						'options'=>array(
 							'showOn' => 'focus',
-							'dateFormat' => 'dd-mm-yy',
+							'dateFormat' => 'yy-mm-dd',
 							'showOtherMonths' => true,
 							'selectOtherMonths' => true,
 							'changeMonth' => true,
@@ -435,7 +435,7 @@ class ArticleCollections extends CActiveRecord
 						),
 						'options'=>array(
 							'showOn' => 'focus',
-							'dateFormat' => 'dd-mm-yy',
+							'dateFormat' => 'yy-mm-dd',
 							'showOtherMonths' => true,
 							'selectOtherMonths' => true,
 							'changeMonth' => true,
@@ -448,7 +448,7 @@ class ArticleCollections extends CActiveRecord
 			if(in_array('author_search', $gridview_column)) {
 				$this->defaultColumns[] = array(
 					'name' => 'author_search',
-					'value' => 'CHtml::link($data->view->authors ? $data->view->authors : 0, Yii::app()->controller->createUrl("collection/authors/manage",array(\'collection\'=>$data->collection_id,\'plugin\'=>\'collection\')))',
+					'value' => 'CHtml::link($data->view->authors ? $data->view->authors : 0, Yii::app()->controller->createUrl("collection/authors/manage", array(\'collection\'=>$data->collection_id,\'plugin\'=>\'collection\')))',
 					'htmlOptions' => array(
 						'class' => 'center',
 					),
@@ -458,7 +458,7 @@ class ArticleCollections extends CActiveRecord
 			if(in_array('subject_search', $gridview_column)) {
 				$this->defaultColumns[] = array(
 					'name' => 'subject_search',
-					'value' => 'CHtml::link($data->view->subjects ? $data->view->subjects : 0, Yii::app()->controller->createUrl("collection/subjects/manage",array(\'collection\'=>$data->collection_id,\'plugin\'=>\'collection\')))',
+					'value' => 'CHtml::link($data->view->subjects ? $data->view->subjects : 0, Yii::app()->controller->createUrl("collection/subjects/manage", array(\'collection\'=>$data->collection_id,\'plugin\'=>\'collection\')))',
 					'htmlOptions' => array(
 						'class' => 'center',
 					),
@@ -468,7 +468,7 @@ class ArticleCollections extends CActiveRecord
 			if(in_array('media_search', $gridview_column)) {
 				$this->defaultColumns[] = array(
 					'name' => 'media_search',
-					'value' => 'CHtml::link($data->article->view->medias ? $data->article->view->medias : 0, Yii::app()->controller->createUrl("o/media/manage",array(\'article\'=>$data->article_id)))',
+					'value' => 'CHtml::link($data->article->view->medias ? $data->article->view->medias : 0, Yii::app()->controller->createUrl("o/media/manage", array(\'article\'=>$data->article_id)))',
 					'htmlOptions' => array(
 						'class' => 'center',
 					),
@@ -478,7 +478,7 @@ class ArticleCollections extends CActiveRecord
 			if(in_array('view_search', $gridview_column)) {
 				$this->defaultColumns[] = array(
 					'name' => 'view_search',
-					'value' => 'CHtml::link($data->article->view->views ? $data->article->view->views : 0, Yii::app()->controller->createUrl("o/views/manage",array(\'article\'=>$data->article_id)))',
+					'value' => 'CHtml::link($data->article->view->views ? $data->article->view->views : 0, Yii::app()->controller->createUrl("o/views/manage", array(\'article\'=>$data->article_id)))',
 					'htmlOptions' => array(
 						'class' => 'center',
 					),
@@ -488,7 +488,7 @@ class ArticleCollections extends CActiveRecord
 			if(in_array('like_search', $gridview_column)) {
 				$this->defaultColumns[] = array(
 					'name' => 'like_search',
-					'value' => 'CHtml::link($data->article->view->likes ? $data->article->view->likes : 0, Yii::app()->controller->createUrl("o/like/manage",array(\'article\'=>$data->article_id)))',
+					'value' => 'CHtml::link($data->article->view->likes ? $data->article->view->likes : 0, Yii::app()->controller->createUrl("o/like/manage", array(\'article\'=>$data->article_id)))',
 					'htmlOptions' => array(
 						'class' => 'center',
 					),
@@ -498,17 +498,17 @@ class ArticleCollections extends CActiveRecord
 			if(in_array('downlaod_search', $gridview_column)) {
 				$this->defaultColumns[] = array(
 					'name' => 'downlaod_search',
-					'value' => 'CHtml::link($data->article->view->downloads ? $data->article->view->downloads : 0, Yii::app()->controller->createUrl("o/download/manage",array(\'article\'=>$data->article_id)))',
+					'value' => 'CHtml::link($data->article->view->downloads ? $data->article->view->downloads : 0, Yii::app()->controller->createUrl("o/download/manage", array(\'article\'=>$data->article_id)))',
 					'htmlOptions' => array(
 						'class' => 'center',
 					),
 					'type' => 'raw',
 				);
 			}
-			if(!isset($_GET['type'])) {
+			if(!Yii::app()->getRequest()->getParam('type')) {
 				$this->defaultColumns[] = array(
 					'name' => 'publish',
-					'value' => 'Utility::getPublish(Yii::app()->controller->createUrl("publish",array("id"=>$data->collection_id,\'plugin\'=>\'collection\')), $data->publish, 1)',
+					'value' => 'Utility::getPublish(Yii::app()->controller->createUrl("publish", array("id"=>$data->collection_id,\'plugin\'=>\'collection\')), $data->publish, 1)',
 					'htmlOptions' => array(
 						'class' => 'center',
 					),
@@ -529,7 +529,7 @@ class ArticleCollections extends CActiveRecord
 	public static function getInfo($id, $column=null)
 	{
 		if($column != null) {
-			$model = self::model()->findByPk($id,array(
+			$model = self::model()->findByPk($id, array(
 				'select' => $column,
 			));
 			if(count(explode(',', $column)) == 1)

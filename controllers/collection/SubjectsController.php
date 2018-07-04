@@ -17,7 +17,7 @@
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @contact (+62)856-299-4114
- * @copyright Copyright (c) 2016 Ommu Platform (opensource.ommu.co)
+ * @copyright Copyright (c) 2016 Ommu Platform (www.ommu.co)
  * @created date 20 October 2016, 10:12 WIB
  * @link https://github.com/ommu/ommu-article-collection
  *
@@ -135,7 +135,7 @@ class SubjectsController extends Controller
 		$this->pageTitle = $pageTitle;
 		$this->pageDescription = '';
 		$this->pageMeta = '';
-		$this->render('admin_manage',array(
+		$this->render('admin_manage', array(
 			'model'=>$model,
 			'columns' => $columns,
 		));
@@ -159,9 +159,9 @@ class SubjectsController extends Controller
 
 			if($model->save()) {
 				if(isset($_GET['hook']) && $_GET['hook'] == 'collection')
-					$url = Yii::app()->controller->createUrl('delete',array('id'=>$model->id,'hook'=>'collection','plugin'=>'collection'));
+					$url = Yii::app()->controller->createUrl('delete', array('id'=>$model->id,'hook'=>'collection','plugin'=>'collection'));
 				else 
-					$url = Yii::app()->controller->createUrl('delete',array('id'=>$model->id,'plugin'=>'collection'));
+					$url = Yii::app()->controller->createUrl('delete', array('id'=>$model->id,'plugin'=>'collection'));
 				echo CJSON::encode(array(
 					'data' => '<div>'.$model->tag->body.'<a href="'.$url.'" title="'.Yii::t('phrase', 'Delete').'">'.Yii::t('phrase', 'Delete').'</a></div>',
 				));

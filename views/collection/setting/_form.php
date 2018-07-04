@@ -7,7 +7,7 @@
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @contact (+62)856-299-4114
- * @copyright Copyright (c) 2016 Ommu Platform (opensource.ommu.co)
+ * @copyright Copyright (c) 2016 Ommu Platform (www.ommu.co)
  * @created date 26 October 2016, 06:58 WIB
  * @link https://github.com/ommu/ommu-article-collection
  *
@@ -35,13 +35,11 @@
 			</label>
 			<div class="desc">
 				<?php 
-				if($model->isNewRecord || (!$model->isNewRecord && $model->license == ''))
-					$model->license = ArticleCollectionSetting::getLicense();
-			
-				if($model->isNewRecord || (!$model->isNewRecord && $model->license == ''))
-					echo $form->textField($model,'license',array('maxlength'=>32,'class'=>'span-4'));
-				else
-					echo $form->textField($model,'license',array('maxlength'=>32,'class'=>'span-4','disabled'=>'disabled'));?>
+				if($model->isNewRecord || (!$model->isNewRecord && $model->license == '')) {
+					$model->license = $this->licenseCode();
+					echo $form->textField($model,'license', array('maxlength'=>32,'class'=>'span-4'));
+				} else
+					echo $form->textField($model,'license', array('maxlength'=>32,'class'=>'span-4','disabled'=>'disabled'));?>
 				<?php echo $form->error($model,'license'); ?>
 				<span class="small-px"><?php echo Yii::t('phrase', 'Format: XXXX-XXXX-XXXX-XXXX');?></span>
 			</div>
@@ -65,7 +63,7 @@
 		<div class="clearfix">
 			<?php echo $form->labelEx($model,'meta_description'); ?>
 			<div class="desc">
-				<?php echo $form->textArea($model,'meta_description',array('rows'=>6, 'cols'=>50, 'class'=>'span-7 smaller')); ?>
+				<?php echo $form->textArea($model,'meta_description', array('rows'=>6, 'cols'=>50, 'class'=>'span-7 smaller')); ?>
 				<?php echo $form->error($model,'meta_description'); ?>
 			</div>
 		</div>
@@ -73,7 +71,7 @@
 		<div class="clearfix">
 			<?php echo $form->labelEx($model,'meta_keyword'); ?>
 			<div class="desc">
-				<?php echo $form->textArea($model,'meta_keyword',array('rows'=>6, 'cols'=>50, 'class'=>'span-7 smaller')); ?>
+				<?php echo $form->textArea($model,'meta_keyword', array('rows'=>6, 'cols'=>50, 'class'=>'span-7 smaller')); ?>
 				<?php echo $form->error($model,'meta_keyword'); ?>
 			</div>
 		</div>
