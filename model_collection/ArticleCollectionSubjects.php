@@ -34,6 +34,8 @@
  */
 class ArticleCollectionSubjects extends CActiveRecord
 {
+	use UtilityTrait;
+
 	public $defaultColumns = array();
 	public $tag_i;
 	
@@ -309,7 +311,7 @@ class ArticleCollectionSubjects extends CActiveRecord
 	protected function beforeSave() {
 		if(parent::beforeSave()) {
 			if($this->isNewRecord) {
-				$tag_i = Utility::getUrlTitle(strtolower(trim($this->tag_i)));
+				$tag_i = $this->urlTitle($this->tag_i);
 				if($this->tag_id == 0) {
 					$subject = OmmuTags::model()->find(array(
 						'select' => 'tag_id, body',
