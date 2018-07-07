@@ -80,14 +80,14 @@
 						'label' => 'update',
 						'imageUrl' => Yii::app()->params['grid-view']['buttonImageUrl'],
 						'options' => array(
-							'class' => 'update'
+							'class' => 'update',
 						),
 						'url' => 'Yii::app()->controller->createUrl(\'edit\', array(\'id\'=>$data->primaryKey,\'plugin\'=>\'collection\'))'),
 					'delete' => array(
 						'label' => 'delete',
 						'imageUrl' => Yii::app()->params['grid-view']['buttonImageUrl'],
 						'options' => array(
-							'class' => 'delete'
+							'class' => 'delete',
 						),
 						'url' => 'Yii::app()->controller->createUrl(\'delete\', array(\'id\'=>$data->primaryKey,\'plugin\'=>\'collection\'))')
 				),
