@@ -71,25 +71,25 @@
 				'buttons' => array(
 					'view' => array(
 						'label' => 'view',
-						'imageUrl' => false,
-						'options' => array(							
+						'imageUrl' => Yii::app()->params['grid-view']['buttonImageUrl'],
+						'options' => array(
 							'class' => 'view',
 						),
-						'url' => 'Yii::app()->controller->createUrl("view", array("id"=>$data->primaryKey,\'plugin\'=>\'collection\'))'),
+						'url' => 'Yii::app()->controller->createUrl(\'view\', array(\'id\'=>$data->primaryKey,\'plugin\'=>\'collection\'))'),
 					'update' => array(
 						'label' => 'update',
-						'imageUrl' => false,
+						'imageUrl' => Yii::app()->params['grid-view']['buttonImageUrl'],
 						'options' => array(
 							'class' => 'update'
 						),
-						'url' => 'Yii::app()->controller->createUrl("edit", array("id"=>$data->primaryKey,\'plugin\'=>\'collection\'))'),
+						'url' => 'Yii::app()->controller->createUrl(\'edit\', array(\'id\'=>$data->primaryKey,\'plugin\'=>\'collection\'))'),
 					'delete' => array(
 						'label' => 'delete',
-						'imageUrl' => false,
+						'imageUrl' => Yii::app()->params['grid-view']['buttonImageUrl'],
 						'options' => array(
 							'class' => 'delete'
 						),
-						'url' => 'Yii::app()->controller->createUrl("delete", array("id"=>$data->primaryKey,\'plugin\'=>\'collection\'))')
+						'url' => 'Yii::app()->controller->createUrl(\'delete\', array(\'id\'=>$data->primaryKey,\'plugin\'=>\'collection\'))')
 				),
 				'template' => '{view}',
 			));
@@ -98,9 +98,10 @@
 				'id'=>'view-article-collection-subject-grid',
 				'dataProvider'=>$model->search(),
 				'filter'=>$model,
-				'afterAjaxUpdate' => 'reinstallDatePicker',
-				'columns' => $columnData,
-				'pager' => array('header' => ''),
+				'afterAjaxUpdate'=>'reinstallDatePicker',
+				'columns'=>$columnData,
+				'template'=>Yii::app()->params['grid-view']['gridTemplate'],
+				'pager'=>array('header'=>''),
 			));
 		?>
 		<?php //end.Grid Item ?>

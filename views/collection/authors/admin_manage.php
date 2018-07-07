@@ -71,22 +71,25 @@
 				'buttons' => array(
 					'view' => array(
 						'label' => 'view',
-						'options' => array(							
+						'imageUrl' => Yii::app()->params['grid-view']['buttonImageUrl'],
+						'options' => array(
 							'class' => 'view',
 						),
-						'url' => 'Yii::app()->controller->createUrl("view", array("id"=>$data->primaryKey,\'plugin\'=>\'collection\'))'),
+						'url' => 'Yii::app()->controller->createUrl(\'view\', array(\'id\'=>$data->primaryKey,\'plugin\'=>\'collection\'))'),
 					'update' => array(
 						'label' => 'update',
+						'imageUrl' => Yii::app()->params['grid-view']['buttonImageUrl'],
 						'options' => array(
-							'class' => 'update'
+							'class' => 'update',
 						),
-						'url' => 'Yii::app()->controller->createUrl("edit", array("id"=>$data->primaryKey,\'plugin\'=>\'collection\'))'),
+						'url' => 'Yii::app()->controller->createUrl(\'edit\', array(\'id\'=>$data->primaryKey,\'plugin\'=>\'collection\'))'),
 					'delete' => array(
 						'label' => 'delete',
+						'imageUrl' => Yii::app()->params['grid-view']['buttonImageUrl'],
 						'options' => array(
-							'class' => 'delete'
+							'class' => 'delete',
 						),
-						'url' => 'Yii::app()->controller->createUrl("delete", array("id"=>$data->primaryKey,\'plugin\'=>\'collection\'))')
+						'url' => 'Yii::app()->controller->createUrl(\'delete\', array(\'id\'=>$data->primaryKey,\'plugin\'=>\'collection\'))')
 				),
 				'template' => '{delete}',
 			));
@@ -95,8 +98,9 @@
 				'id'=>'article-collection-authors-grid',
 				'dataProvider'=>$model->search(),
 				'filter'=>$model,
-				'columns' => $columnData,
-				'pager' => array('header' => ''),
+				'columns'=>$columnData,
+				'template'=>Yii::app()->params['grid-view']['gridTemplate'],
+				'pager'=>array('header'=>''),
 			));
 		?>
 		<?php //end.Grid Item ?>
