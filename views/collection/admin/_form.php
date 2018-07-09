@@ -14,7 +14,7 @@
  */
 ?>
 
-<?php $form=$this->beginWidget('application.libraries.core.components.system.OActiveForm', array(
+<?php $form=$this->beginWidget('application.libraries.yii-traits.system.OActiveForm', array(
 	'id'=>'article-collections-form',
 	'enableAjaxValidation'=>true,
 	'htmlOptions' => array('enctype' => 'multipart/form-data'),
@@ -298,7 +298,7 @@
 						<?php 
 						$article->published_date = $article->isNewRecord && $article->published_date == '' ? date('d-m-Y') : date('d-m-Y', strtotime($article->published_date));
 						//echo $form->textField($article,'published_date', array('class'=>'span-7'));
-						$this->widget('application.libraries.core.components.system.CJuiDatePicker', array(
+						$this->widget('zii.widgets.jui.CJuiDatePicker', array(
 							'model'=>$article, 
 							'attribute'=>'published_date',
 							//'mode'=>'datetime',
