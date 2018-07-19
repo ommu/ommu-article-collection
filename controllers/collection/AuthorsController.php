@@ -117,7 +117,7 @@ class AuthorsController extends Controller
 		}
 		
 		$model=new ArticleCollectionAuthors('search');
-		$model->unsetAttributes();  // clear any default values
+		$model->unsetAttributes();	// clear any default values
 		if(isset($_GET['ArticleCollectionAuthors'])) {
 			$model->attributes=$_GET['ArticleCollectionAuthors'];
 		}

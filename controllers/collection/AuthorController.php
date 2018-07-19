@@ -143,7 +143,7 @@ class AuthorController extends Controller
 	public function actionManage() 
 	{
 		$model=new ArticleCollectionAuthor('search');
-		$model->unsetAttributes();  // clear any default values
+		$model->unsetAttributes();	// clear any default values
 		if(isset($_GET['ArticleCollectionAuthor'])) {
 			$model->attributes=$_GET['ArticleCollectionAuthor'];
 		}

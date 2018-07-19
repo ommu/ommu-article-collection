@@ -105,7 +105,7 @@ class SubjectController extends Controller
 	public function actionManage() 
 	{
 		$model=new ViewArticleCollectionSubject('search');
-		$model->unsetAttributes();  // clear any default values
+		$model->unsetAttributes();	// clear any default values
 		if(isset($_GET['ViewArticleCollectionSubject'])) {
 			$model->attributes=$_GET['ViewArticleCollectionSubject'];
 		}

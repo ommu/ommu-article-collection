@@ -121,7 +121,7 @@ class AdminController extends Controller
 		}
 		
 		$model=new ArticleCollections('search');
-		$model->unsetAttributes();  // clear any default values
+		$model->unsetAttributes();	// clear any default values
 		if(isset($_GET['ArticleCollections'])) {
 			$model->attributes=$_GET['ArticleCollections'];
 		}

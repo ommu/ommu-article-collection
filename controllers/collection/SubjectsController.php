@@ -117,7 +117,7 @@ class SubjectsController extends Controller
 		}
 		
 		$model=new ArticleCollectionSubjects('search');
-		$model->unsetAttributes();  // clear any default values
+		$model->unsetAttributes();	// clear any default values
 		if(isset($_GET['ArticleCollectionSubjects'])) {
 			$model->attributes=$_GET['ArticleCollectionSubjects'];
 		}
