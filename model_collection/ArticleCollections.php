@@ -179,28 +179,28 @@ class ArticleCollections extends CActiveRecord
 		// Custom Search
 		$criteria->with = array(
 			'view' => array(
-				'alias'=>'view',
+				'alias' => 'view',
 			),
 			'article' => array(
-				'alias'=>'article',
-				'select'=>'title, published_date',
+				'alias' => 'article',
+				'select' => 'title, published_date',
 			),
 			'article.tags' => array(
-				'alias'=>'tags',
-				'select'=>'tag_id',
+				'alias' => 'tags',
+				'select' => 'tag_id',
 				'together'=>true,
 			),
 			'publisher' => array(
-				'alias'=>'publisher',
-				'select'=>'publisher_name',
+				'alias' => 'publisher',
+				'select' => 'publisher_name',
 			),
 			'creation' => array(
-				'alias'=>'creation',
-				'select'=>'displayname',
+				'alias' => 'creation',
+				'select' => 'displayname',
 			),
 			'modified' => array(
-				'alias'=>'modified',
-				'select'=>'displayname',
+				'alias' => 'modified',
+				'select' => 'displayname',
 			),
 		);
 
@@ -408,7 +408,7 @@ class ArticleCollections extends CActiveRecord
 					'htmlOptions' => array(
 						'class' => 'center',
 					),
-					'filter' => $this->filterDatepicker($this, 'published_date_search'),
+					'filter'=> $this->filterDatepicker($this, 'published_date_search'),
 				);
 			}
 			if(in_array('author_search', $gridview_column)) {

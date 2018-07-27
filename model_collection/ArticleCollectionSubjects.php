@@ -137,20 +137,20 @@ class ArticleCollectionSubjects extends CActiveRecord
 		// Custom Search
 		$criteria->with = array(
 			'collection' => array(
-				'alias'=>'collection',
-				'select'=>'cat_id, article_id',
+				'alias' => 'collection',
+				'select' => 'cat_id, article_id',
 			),
 			'collection.article' => array(
-				'alias'=>'collection_article',
-				'select'=>'title',
+				'alias' => 'collection_article',
+				'select' => 'title',
 			),
 			'tag' => array(
-				'alias'=>'tag',
-				'select'=>'body',
+				'alias' => 'tag',
+				'select' => 'body',
 			),
 			'creation' => array(
-				'alias'=>'creation',
-				'select'=>'displayname',
+				'alias' => 'creation',
+				'select' => 'displayname',
 			),
 		);
 

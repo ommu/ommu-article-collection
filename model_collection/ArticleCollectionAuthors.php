@@ -136,20 +136,20 @@ class ArticleCollectionAuthors extends CActiveRecord
 		// Custom Search
 		$criteria->with = array(
 			'collection' => array(
-				'alias'=>'collection',
-				'select'=>'cat_id, article_id',
+				'alias' => 'collection',
+				'select' => 'cat_id, article_id',
 			),
 			'collection.article' => array(
-				'alias'=>'collection_article',
-				'select'=>'title',
+				'alias' => 'collection_article',
+				'select' => 'title',
 			),
 			'author' => array(
-				'alias'=>'author',
-				'select'=>'author_name',
+				'alias' => 'author',
+				'select' => 'author_name',
 			),
 			'creation' => array(
-				'alias'=>'creation',
-				'select'=>'displayname',
+				'alias' => 'creation',
+				'select' => 'displayname',
 			),
 		);
 

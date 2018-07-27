@@ -131,8 +131,8 @@ class ViewArticleCollectionSubject extends CActiveRecord
 		// Custom Search
 		$criteria->with = array(
 			'tag' => array(
-				'alias'=>'tag',
-				'select'=>'body',
+				'alias' => 'tag',
+				'select' => 'body',
 			),
 		);
 
@@ -212,7 +212,7 @@ class ViewArticleCollectionSubject extends CActiveRecord
 				'htmlOptions' => array(
 					'class' => 'center',
 				),
-				'filter' => $this->filterDatepicker($this, 'modified_date'),
+				'filter'=> $this->filterDatepicker($this, 'modified_date'),
 			);
 			$this->defaultColumns[] = array(
 				'name' => 'collections',
