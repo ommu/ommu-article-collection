@@ -143,7 +143,7 @@
 								}
 							}?>
 						</div>
-						<?php if($model->isNewRecord) {?><span class="small-px">tambahkan tanda pagar (#) jika ingin menambahkan aothor lebih dari satu</span><?php }?>
+						<?php if($model->isNewRecord) {?><div class="small-px">tambahkan tanda pagar (#) jika ingin menambahkan aothor lebih dari satu</div><?php }?>
 					</div>
 				</div>
 
@@ -246,7 +246,7 @@
 								}
 							}?>
 						</div>
-						<?php if($model->isNewRecord) {?><span class="small-px">tambahkan tanda koma (,) jika ingin menambahkan subject lebih dari satu</span><?php }?>
+						<?php if($model->isNewRecord) {?><div class="small-px">tambahkan tanda koma (,) jika ingin menambahkan subject lebih dari satu</div><?php }?>
 					</div>
 				</div>
 			</div>
@@ -269,7 +269,7 @@
 						}
 						echo $form->fileField($article,'media_input'); ?>
 						<?php echo $form->error($article,'media_input'); ?>
-						<span class="small-px">extensions are allowed: <?php echo Utility::formatFileType($media_file_type, false);?></span>
+						<div class="small-px">extensions are allowed: <?php echo Utility::formatFileType($media_file_type, false);?></div>
 					</div>
 				</div>
 				
@@ -288,7 +288,7 @@
 						}
 						echo $form->fileField($article,'media_file'); ?>
 						<?php echo $form->error($article,'media_file'); ?>
-						<span class="small-px">extensions are allowed: <?php echo Utility::formatFileType($upload_file_type, false);?></span>
+						<div class="small-px">extensions are allowed: <?php echo Utility::formatFileType($upload_file_type, false);?></div>
 					</div>
 				</div>
 	
@@ -358,9 +358,7 @@
 				$this->widget('yiiext.imperavi-redactor-widget.ImperaviRedactorWidget', array(
 					'model'=>$article,
 					'attribute'=>body,
-					// Redactor options
 					'options'=>array(
-						//'lang'=>'fi',
 						'buttons'=>array(
 							'html', 'formatting', '|', 
 							'bold', 'italic', 'deleted', '|',

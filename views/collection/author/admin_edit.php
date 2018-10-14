@@ -16,7 +16,7 @@
 	$this->breadcrumbs=array(
 		'Article Collection Authors'=>array('manage'),
 		$model->author_id=>array('view','id'=>$model->author_id),
-		'Update',
+		Yii::t('phrase', 'Update'),
 	);
 ?>
 

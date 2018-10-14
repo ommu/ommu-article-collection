@@ -16,7 +16,7 @@
 	$this->breadcrumbs=array(
 		'Article Collections'=>array('manage'),
 		$model->collection_id=>array('view','id'=>$model->collection_id),
-		'Update',
+		Yii::t('phrase', 'Update'),
 	);
 ?>
 

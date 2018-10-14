@@ -176,11 +176,11 @@ class SettingController extends Controller
 		$this->dialogGroundUrl = Yii::app()->controller->createUrl('collection/admin/manage', array('plugin'=>'collection'));
 		$this->dialogWidth = 400;
 		
-		$this->pageTitle = Yii::t('phrase', 'Collection Manual Book');
+		$this->pageTitle = Yii::t('phrase', 'Collection Manual');
 		$this->pageDescription = '';
 		$this->pageMeta = '';
 		$this->render('admin_manual', array(
-			'manual_path'=>$manual_path,			
+			'manual_path'=>$manual_path,
 		));
 	}
 

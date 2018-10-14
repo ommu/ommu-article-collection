@@ -474,7 +474,7 @@ class ArticleCollections extends CActiveRecord
 			if(!Yii::app()->getRequest()->getParam('type')) {
 				$this->defaultColumns[] = array(
 					'name' => 'publish',
-					'value' => 'Utility::getPublish(Yii::app()->controller->createUrl("publish", array("id"=>$data->collection_id,\'plugin\'=>\'collection\')), $data->publish, 1)',
+					'value' => 'Utility::getPublish(Yii::app()->controller->createUrl(\'publish\', array(\'id\'=>$data->collection_id,\'plugin\'=>\'collection\')), $data->publish, 1)',
 					'htmlOptions' => array(
 						'class' => 'center',
 					),
